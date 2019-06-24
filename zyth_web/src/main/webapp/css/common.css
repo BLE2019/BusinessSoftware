@@ -1,0 +1,51 @@
+table .btn{
+	margin-left:5px;
+	padding:2px 8px;
+}
+.query-box{
+	height:50px;
+	line-height:50px;
+}
+.query-box input{
+	height:20px;
+	line-height:20px;
+}
+.query-box label{
+	margin-left:20px;
+}
+.query-box button{
+	float:right;
+	margin-right:30px;
+}
+.table>tbody>tr>td{
+padding:2px;
+}
+
+
+#content{
+	position:relative;
+}
+.hat{
+	font-size:3px;
+	position:absolute;
+	z-index:9;
+	color:orange;
+}
+.red_hat{
+	color:red;
+}
+.yellow_hat{
+	color:orange;
+}
+.hat img{
+	width:20px;
+	height:20px;
+	margin-top:-10px;
+	z-index:8;
+}
+#bg_map{
+	width:800px;
+}
+#error_msg{
+	display:none;
+}

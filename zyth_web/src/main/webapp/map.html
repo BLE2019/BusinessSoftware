@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>智云太禾安监位置管理系统</title>
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css">
+  <link rel="stylesheet" href="css/AdminLTE.min.css">
+  <link rel="stylesheet" href="css/skins/skin-blue.css">
+  <link rel="stylesheet" href="css/common.css">
+  <style>
+	.btn-sm{
+		padding:3px 5px;
+		width:70%;
+		margin:auto;
+	}
+	#map_list .box{
+		height:200px;
+	}
+  </style>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+  <header class="main-header">
+    <a href="index2.html" class="logo">
+      <span class="logo-lg"><b>智云太禾</b>安监位置管理系统</span>
+    </a>
+    <nav class="navbar navbar-static-top" role="navigation">
+      <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+        <span class="sr-only">Toggle navigation</span>
+      </a>
+	  <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+          <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+              <span class="hidden-xs">欢迎您，王经理</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+  </header>
+  <aside class="main-sidebar">
+    <section class="sidebar">
+      <ul class="sidebar-menu" data-widget="tree">
+        <li class="header">菜单</li>
+      </ul>
+    </section>
+  </aside>
+
+  <div class="content-wrapper">
+	<section class="content">
+	  <div class="row">
+        <div class="col-xs-2" id="map_list">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">地图列表</h3>
+            </div>
+			<div>
+				<button type="button" class="btn btn-block btn-info btn-sm">1楼</button>
+				<button type="button" class="btn btn-block btn-info btn-sm">2楼</button>
+
+			</div>
+        </div>
+      </div>
+        <div class="col-xs-10">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">地图详细信息</h3>
+            </div>
+			<div>
+				<a class="btn btn-app" id="add_btn" data-toggle="modal" data-target="#modal-default">
+					<i class="fa fa-plus"></i> 添加电子围栏
+				</a>
+				<a class="btn btn-app">
+					<i class="fa fa-minus"></i> 添加信标
+				</a>
+				<a class="btn btn-app" id="add_btn" data-toggle="modal" data-target="#modal-default">
+					<i class="fa fa-plus"></i> 电子围栏列表
+				</a>
+				<a class="btn btn-app">
+					<i class="fa fa-minus"></i> 信标列表
+				</a>
+
+			</div>
+			<img id="bg_map" src="img/bg_map.jpg">
+        </div>
+      </div>
+
+    </section>
+  </div>
+
+		<div class="modal fade" id="modal-default" style="display: none;">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span></button>
+                <h4 class="modal-title">新增用户</h4>
+              </div>
+              <div class="modal-body">
+                <form class="form-horizontal" id="tagForm">
+					<fieldset>
+						<div class="form-group">
+						  <label for="inputEmail3" class="col-sm-2 control-label">姓名</label>
+						  <div class="col-sm-4">
+							<input type="text" class="form-control" />
+						  </div>
+						</div>
+						<div class="form-group">
+						  <label for="inputEmail3" class="col-sm-2 control-label">性别</label>
+						  <div class="col-sm-4">
+							<input type="radio"  />男
+							<input type="radio"  />女
+						  </div>
+						</div>
+						<div class="form-group">
+						  <label for="inputEmail3" class="col-sm-2 control-label">SN</label>
+						  <div class="col-sm-4">
+							<input type="text" class="form-control" />
+						  </div>
+						</div>
+						<div class="form-group">
+						  <label for="inputEmail3" class="col-sm-2 control-label">人员类型</label>
+						  <div class="col-sm-4">
+							<select class="form-control">
+								<option>管理信息处</option>
+								<option>1号车间</option>
+								<option>2号车间</option>
+							  </select>
+						  </div>
+						</div>
+
+					</fieldset>
+				  </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary">保存</button>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="js/adminlte.min.js"></script>
+<script src="js/common.js"></script>
+
+	<script>
+
+	</script>
+</body>
+</html>

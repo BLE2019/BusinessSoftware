@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>智云太禾安监位置管理系统</title>
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css">
+  <link rel="stylesheet" href="css/AdminLTE.min.css">
+  <link rel="stylesheet" href="css/skins/skin-blue.css">
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/fengMap.css">
+  <link rel="stylesheet" href="css/iconfont.css">
+
+
+<style>
+
+    #container{width:800px;height:500px;border:1px solid gray}
+	#fengMap_content{position:relative;height:500px;}
+	.map-container{height:500px;}
+</style>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+  <header class="main-header">
+    <a href="index2.html" class="logo">
+      <span class="logo-lg"><b>智云太禾</b>安监位置管理系统</span>
+    </a>
+    <nav class="navbar navbar-static-top" role="navigation">
+      <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+        <span class="sr-only">Toggle navigation</span>
+      </a>
+	  <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+          <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+              <span class="hidden-xs">欢迎您，王经理</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+  </header>
+  <aside class="main-sidebar">
+    <section class="sidebar">
+      <ul class="sidebar-menu" data-widget="tree">
+        <li class="header">菜单</li>
+      </ul>
+    </section>
+  </aside>
+
+  <div class="content-wrapper">
+	  <section class="content">
+	  <div class="callout callout-danger" id="error_msg">
+		<h4>请注意有<span></span>条报警</h4>
+	  </div>
+
+	  <div class="row">
+        <div class="col-md-10">
+          <div class="box box-default">
+		    <div class="nav-tabs-custom map-container">
+				<ul class="nav nav-tabs">
+						<li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="false">园区位置分布图</a></li>
+						<li class=""><a href="#tab_2" data-toggle="tab" aria-expanded="false">百度地图位置</a></li>
+				</ul>
+				<div class="tab-content">
+					<div class="tab-pane active" id="tab_1">
+						<div id="fengMap_content">
+							<div id="fengMap">
+							</div>
+							<!-- 楼层按钮组 -->
+							<div class="btn-group-vertical group-layer" data-toggle="buttons">
+								<label class="btn btn-primary btn-layer"><i class="icon iconfont"></i></label>
+								<span id="top" class="btn btn-default"><i class="icon iconfont"></i></span>
+								<div class="btn-group-vertical layer-list" data-toggle="buttons" tabindex="5000" style="height:350px;overflow: hidden; outline: none;">
+								<label class="btn btn-lg btn-default" data-gid="11"><span>F11</span></label>
+								<label class="btn btn-lg btn-default" data-gid="10"><span>F10</span></label>
+								<label class="btn btn-lg btn-default" data-gid="9"><span>F9</span></label>
+								<label class="btn btn-lg btn-default" data-gid="8"><span>F8</span></label>
+								<label class="btn btn-lg btn-default" data-gid="7"><span>F7</span></label>
+								<label class="btn btn-lg btn-default" data-gid="6"><span>F6</span></label>
+								<label class="btn btn-lg btn-default" data-gid="5"><span>F5</span></label>
+								<label class="btn btn-lg btn-default" data-gid="4"><span>F4</span></label>
+								<label class="btn btn-lg btn-default" data-gid="3"><span>F3</span></label>
+								<label class="btn btn-lg btn-default" data-gid="2"><span>F2</span></label>
+								<label class="btn btn-lg btn-default active" data-gid="1"><span>F1</span></label>
+
+								</div>
+								<span id="down" class="btn btn-default disabled"><i class="icon iconfont"></i></span>
+							</div>
+						</div>
+					</div>
+					<!-- 百度地图 -->
+					<div class="tab-pane" id="tab_2">
+						<div id="container">
+						</div>
+					</div>
+				</div>
+			</div>
+          </div>
+        </div>
+
+        <div class="col-md-2">
+          <div class="box box-default">
+            <div class="box-header with-border">
+              <i class="fa  fa-calculator"></i>
+
+              <h3 class="box-title">人数统计</h3>
+            </div>
+            <div class="box-body">
+				<div>
+					总人数：200
+				</div>
+				<div>
+					区域一：100
+				</div>
+				<div>
+					区域二：100
+				</div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </section>
+  </div>
+
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="dist/js/adminlte.min.js"></script>
+<script src="js/jquery.nicescroll.js"></script>
+<script src="js/common.js"></script>
+<script src="js/fengmap.min.js"></script>
+<script src="js/layerGroup.js"></script>
+<script src="js/layerList.js"></script>
+
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=y2LteM9nGX7huXNMFNPrUOnhL4LZde3x"></script>
+
+<script>
+
+
+	//refresh();
+	//定义全局map变量
+		var map;
+		var fmapID = '10347';
+		var locationMarker = null;
+
+		window.onload = function() {
+			map = new fengmap.FMMap({
+				//渲染dom
+				container: document.getElementById('fengMap'),
+				//地图数据位置
+				mapServerURL: './data/' + fmapID,
+				//主题数据位置
+				mapThemeURL: './data/',
+				//设置主题
+				defaultThemeName: '2001',
+				// 默认比例尺级别设置为20级
+				defaultMapScaleLevel: 17,
+				//关闭聚焦层切换的动画显示
+				focusAnimateMode: true,
+				focusAlphaMode: false,
+				//设置最大倾斜角
+				defaultMaxTiltAngle: 60,
+				//设置倾斜角，默认倾斜角为60度
+				defaultTiltAngle: 180,
+				//开发者申请应用下web服务的key
+				key: '57c7f309aca507497d028a9c00207cf8',
+				//开发者申请应用名称
+				appName: '蜂鸟研发SDK_2_0',
+			});
+
+			//打开Fengmap服务器的地图数据和主题
+			map.openMapById(fmapID);
+
+			//地图加载完回调事件
+			map.on('loadComplete', function() {
+				//默认楼层加载完后不显示，需自定义设置要显示的楼层和聚焦层
+				map.visibleGroupIDs = map.groupIDs;
+				map.focusGroupID = map.groupIDs[0];
+				layerGroup.init(map.listGroups, map.focusGroupID);
+
+				//循环执行，每隔5秒钟执行一次
+				//window.setInterval(refresh, 5000);
+				init();
+			});
+		};
+					//创建定位点标注
+		function addLocationMarker(x,y,z,hatColor) {
+			locationMarker = new fengmap.FMLocationMarker({
+				//设置图片的路径
+				url: './img/'+hatColor+'.png',
+				//设置图片显示尺寸
+				size: 46,
+				//设置图片高度
+				height: 10,
+			});
+
+			map.addLocationMarker(locationMarker);
+
+			locationMarker.setPosition({
+				//设置定位点的x坐标
+				x: x,
+				//设置定位点的y坐标
+				y: y,
+				//设置定位点所在楼层
+				groupID: map.groupIDs[z],
+				//设置定位点的高于楼层多少
+				zOffset: z+1,
+			});
+		};
+
+		function refresh() {
+			//存储生成的html
+			var redCount = 0;
+			for(var i=0;i<20;i++){
+				var rx = Math.ceil(-200+Math.random()*400);
+				var ry = Math.ceil(-200+Math.random()*400);
+				var rz = Math.ceil(Math.random()*11);
+
+				var rcolor = Math.ceil(100*Math.random()-1);
+				var hatColor = 'yellow_hat';
+				if(rcolor>98){
+					hatColor = 'red_hat';
+					redCount++;
+				}
+				addLocationMarker(13464693 + rx,3743351+ry,rz,hatColor);
+
+			}
+			if(redCount == 0){
+				$("#error_msg").css('display','none');
+			}else{
+				$("#error_msg").css('display','block');
+				$("#error_msg span").html(redCount);
+			}
+		}
+
+		//页面初始化
+		function init() {
+			//调用后台方法
+			$.ajax({
+				type: "post",
+				url: apiUrl+'location/getInitData.htm',
+				contentType: "application/json",
+				sync:false,
+				success: function (result) {
+					var dataList = result.data;
+					//记录报错信息总数
+					var redCount = 0;
+					$(dataList).each(function(i,data){
+						//判断是否是警报用户
+						var hatColor = 'yellow_hat';
+						if(data.isSos){
+							hatColor = 'red_hat';
+						}
+						//在地图上添加对应的点
+						addLocationMarker(13464693 + data.mapX,3743351+data.mapY,data.mapZ,hatColor);
+					})
+				}
+			});
+		}
+
+var BMapIcon = "img/hat.jpg";
+var map = new BMap.Map("container");
+map.centerAndZoom(new BMap.Point(116.403765, 39.914850), 12);
+
+map.enableScrollWheelZoom(true);
+for(var i=0;i<100;i++){
+
+	var rx = Math.random()*750;
+	var ry = Math.random()*290;
+
+	//定位
+	var pt = new BMap.Point(116.397+rx/1000.000, 39.809+ry/1000.000);
+	//创建图标
+	var myIcon = new BMap.Icon(BMapIcon, new BMap.Size(300,157));
+	var marker = new BMap.Marker(pt,{icon:myIcon});  // 创建标注
+	map.addOverlay(marker);              // 将标注添加到地图中
+
+}
+</script>
+</body>
+</html>
