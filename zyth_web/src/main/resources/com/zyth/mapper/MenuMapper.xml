@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyth.web.mapper.MenuMapper" >
+  <resultMap id="BaseResultMap" type="com.zyth.web.bean.vo.MenuVO" >
+    <id column="menu_no" property="menuNo" jdbcType="VARCHAR" />
+    <result column="menu_level" property="menuLevel" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="icon_class" property="iconClass" jdbcType="VARCHAR" />
+    <result column="link_url" property="linkUrl" jdbcType="VARCHAR" />
+    <result column="parent_menu_no" property="parentMenuNo" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    menu_no, menu_level, name, icon_class, link_url, parent_menu_no
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from menu
+    where menu_no = #{menuNo,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByLevel" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from menu
+    where menu_level = #{menuLevel,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByParent" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from menu
+    where parent_menu_no = #{parentMenuNo,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from menu
+    where menu_no = #{menuNo,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.zyth.web.bean.Menu" >
+    insert into menu (menu_no, menu_level, name,
+      icon_class, link_url, parent_menu_no
+      )
+    values (#{menuNo,jdbcType=VARCHAR}, #{menuLevel,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
+      #{iconClass,jdbcType=VARCHAR}, #{linkUrl,jdbcType=VARCHAR}, #{parentMenuNo,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyth.web.bean.Menu" >
+    insert into menu
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="menuNo != null" >
+        menu_no,
+      </if>
+      <if test="menuLevel != null" >
+        menu_level,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="iconClass != null" >
+        icon_class,
+      </if>
+      <if test="linkUrl != null" >
+        link_url,
+      </if>
+      <if test="parentMenuNo != null" >
+        parent_menu_no,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="menuNo != null" >
+        #{menuNo,jdbcType=VARCHAR},
+      </if>
+      <if test="menuLevel != null" >
+        #{menuLevel,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="iconClass != null" >
+        #{iconClass,jdbcType=VARCHAR},
+      </if>
+      <if test="linkUrl != null" >
+        #{linkUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="parentMenuNo != null" >
+        #{parentMenuNo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyth.web.bean.Menu" >
+    update menu
+    <set >
+      <if test="menuLevel != null" >
+        menu_level = #{menuLevel,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="iconClass != null" >
+        icon_class = #{iconClass,jdbcType=VARCHAR},
+      </if>
+      <if test="linkUrl != null" >
+        link_url = #{linkUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="parentMenuNo != null" >
+        parent_menu_no = #{parentMenuNo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where menu_no = #{menuNo,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyth.web.bean.Menu" >
+    update menu
+    set menu_level = #{menuLevel,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      icon_class = #{iconClass,jdbcType=VARCHAR},
+      link_url = #{linkUrl,jdbcType=VARCHAR},
+      parent_menu_no = #{parentMenuNo,jdbcType=VARCHAR}
+    where menu_no = #{menuNo,jdbcType=VARCHAR}
+  </update>
+</mapper>

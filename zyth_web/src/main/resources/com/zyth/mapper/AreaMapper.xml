@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyth.web.mapper.AreaMapper" >
+  <resultMap id="BaseResultMap" type="com.zyth.web.bean.Area" >
+    <id column="area_id" property="areaId" jdbcType="INTEGER" />
+    <result column="map_x0" property="mapX0" jdbcType="VARCHAR" />
+    <result column="map_y0" property="mapY0" jdbcType="VARCHAR" />
+    <result column="map_x1" property="mapX1" jdbcType="VARCHAR" />
+    <result column="map_y1" property="mapY1" jdbcType="VARCHAR" />
+    <result column="map_z" property="mapZ" jdbcType="VARCHAR" />
+    <result column="area_name" property="areaName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    area_id, map_x0, map_y0, map_x1, map_y1, map_z, area_name
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from area
+    where area_id = #{areaId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from area
+    where area_id = #{areaId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zyth.web.bean.Area" >
+    insert into area (area_id, map_x0, map_y0, 
+      map_x1, map_y1, map_z, 
+      area_name)
+    values (#{areaId,jdbcType=INTEGER}, #{mapX0,jdbcType=VARCHAR}, #{mapY0,jdbcType=VARCHAR}, 
+      #{mapX1,jdbcType=VARCHAR}, #{mapY1,jdbcType=VARCHAR}, #{mapZ,jdbcType=VARCHAR}, 
+      #{areaName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyth.web.bean.Area" >
+    insert into area
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="areaId != null" >
+        area_id,
+      </if>
+      <if test="mapX0 != null" >
+        map_x0,
+      </if>
+      <if test="mapY0 != null" >
+        map_y0,
+      </if>
+      <if test="mapX1 != null" >
+        map_x1,
+      </if>
+      <if test="mapY1 != null" >
+        map_y1,
+      </if>
+      <if test="mapZ != null" >
+        map_z,
+      </if>
+      <if test="areaName != null" >
+        area_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="areaId != null" >
+        #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="mapX0 != null" >
+        #{mapX0,jdbcType=VARCHAR},
+      </if>
+      <if test="mapY0 != null" >
+        #{mapY0,jdbcType=VARCHAR},
+      </if>
+      <if test="mapX1 != null" >
+        #{mapX1,jdbcType=VARCHAR},
+      </if>
+      <if test="mapY1 != null" >
+        #{mapY1,jdbcType=VARCHAR},
+      </if>
+      <if test="mapZ != null" >
+        #{mapZ,jdbcType=VARCHAR},
+      </if>
+      <if test="areaName != null" >
+        #{areaName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyth.web.bean.Area" >
+    update area
+    <set >
+      <if test="mapX0 != null" >
+        map_x0 = #{mapX0,jdbcType=VARCHAR},
+      </if>
+      <if test="mapY0 != null" >
+        map_y0 = #{mapY0,jdbcType=VARCHAR},
+      </if>
+      <if test="mapX1 != null" >
+        map_x1 = #{mapX1,jdbcType=VARCHAR},
+      </if>
+      <if test="mapY1 != null" >
+        map_y1 = #{mapY1,jdbcType=VARCHAR},
+      </if>
+      <if test="mapZ != null" >
+        map_z = #{mapZ,jdbcType=VARCHAR},
+      </if>
+      <if test="areaName != null" >
+        area_name = #{areaName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where area_id = #{areaId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyth.web.bean.Area" >
+    update area
+    set map_x0 = #{mapX0,jdbcType=VARCHAR},
+      map_y0 = #{mapY0,jdbcType=VARCHAR},
+      map_x1 = #{mapX1,jdbcType=VARCHAR},
+      map_y1 = #{mapY1,jdbcType=VARCHAR},
+      map_z = #{mapZ,jdbcType=VARCHAR},
+      area_name = #{areaName,jdbcType=VARCHAR}
+    where area_id = #{areaId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyth.web.mapper.LocationBmapMapper" >
+  <resultMap id="BaseResultMap" type="com.zyth.web.bean.LocationBmap" >
+    <result column="deveui" property="deveui" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="map_x" property="mapX" jdbcType="DECIMAL" />
+    <result column="map_y" property="mapY" jdbcType="DECIMAL" />
+    <result column="rcvtime" property="rcvtime" jdbcType="TIMESTAMP" />
+    <result column="area_id" property="areaId" jdbcType="INTEGER" />
+    <result column="is_latest" property="isLatest" jdbcType="INTEGER" />
+  </resultMap>
+  <insert id="insert" parameterType="com.zyth.web.bean.LocationBmap" >
+    insert into location_bmap (deveui, user_id, map_x, 
+      map_y, rcvtime, area_id, 
+      is_latest)
+    values (#{deveui,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, #{mapX,jdbcType=DECIMAL}, 
+      #{mapY,jdbcType=DECIMAL}, #{rcvtime,jdbcType=TIMESTAMP}, #{areaId,jdbcType=INTEGER}, 
+      #{isLatest,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyth.web.bean.LocationBmap" >
+    insert into location_bmap
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="deveui != null" >
+        deveui,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="mapX != null" >
+        map_x,
+      </if>
+      <if test="mapY != null" >
+        map_y,
+      </if>
+      <if test="rcvtime != null" >
+        rcvtime,
+      </if>
+      <if test="areaId != null" >
+        area_id,
+      </if>
+      <if test="isLatest != null" >
+        is_latest,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="deveui != null" >
+        #{deveui,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="mapX != null" >
+        #{mapX,jdbcType=DECIMAL},
+      </if>
+      <if test="mapY != null" >
+        #{mapY,jdbcType=DECIMAL},
+      </if>
+      <if test="rcvtime != null" >
+        #{rcvtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="areaId != null" >
+        #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="isLatest != null" >
+        #{isLatest,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+</mapper>

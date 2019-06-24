@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyth.web.mapper.SosDealMapper" >
+  <resultMap id="BaseResultMap" type="com.zyth.web.bean.SosDeal" >
+    <result column="deveui" property="deveui" jdbcType="VARCHAR" />
+    <result column="msgtype" property="msgtype" jdbcType="VARCHAR" />
+    <result column="seqnum" property="seqnum" jdbcType="INTEGER" />
+    <result column="rcvtime" property="rcvtime" jdbcType="TIMESTAMP" />
+    <result column="deal_time" property="dealTime" jdbcType="TIMESTAMP" />
+    <result column="deal_info" property="dealInfo" jdbcType="VARCHAR" />
+    <result column="deal_status" property="dealStatus" jdbcType="INTEGER" />
+    <result column="area_id" property="areaId" jdbcType="INTEGER" />
+  </resultMap>
+  <insert id="insert" parameterType="com.zyth.web.bean.SosDeal" >
+    insert into sos_deal (deveui, msgtype, seqnum, 
+      rcvtime, deal_time, deal_info, 
+      deal_status, area_id)
+    values (#{deveui,jdbcType=VARCHAR}, #{msgtype,jdbcType=VARCHAR}, #{seqnum,jdbcType=INTEGER}, 
+      #{rcvtime,jdbcType=TIMESTAMP}, #{dealTime,jdbcType=TIMESTAMP}, #{dealInfo,jdbcType=VARCHAR}, 
+      #{dealStatus,jdbcType=INTEGER}, #{areaId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyth.web.bean.SosDeal" >
+    insert into sos_deal
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="deveui != null" >
+        deveui,
+      </if>
+      <if test="msgtype != null" >
+        msgtype,
+      </if>
+      <if test="seqnum != null" >
+        seqnum,
+      </if>
+      <if test="rcvtime != null" >
+        rcvtime,
+      </if>
+      <if test="dealTime != null" >
+        deal_time,
+      </if>
+      <if test="dealInfo != null" >
+        deal_info,
+      </if>
+      <if test="dealStatus != null" >
+        deal_status,
+      </if>
+      <if test="areaId != null" >
+        area_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="deveui != null" >
+        #{deveui,jdbcType=VARCHAR},
+      </if>
+      <if test="msgtype != null" >
+        #{msgtype,jdbcType=VARCHAR},
+      </if>
+      <if test="seqnum != null" >
+        #{seqnum,jdbcType=INTEGER},
+      </if>
+      <if test="rcvtime != null" >
+        #{rcvtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dealTime != null" >
+        #{dealTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dealInfo != null" >
+        #{dealInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="dealStatus != null" >
+        #{dealStatus,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null" >
+        #{areaId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+</mapper>

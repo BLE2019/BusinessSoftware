@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Application context definition
+-->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
+
+    <!-- ========================= RESOURCE DEFINITIONS ========================= -->
+
+    <!-- 自定义常量 -->
+	<bean id="propertyConfigurer"
+		class="com.zyth.web.common.util.PropertyUtils">
+		<property name="locations">
+			<list>
+				<value>classpath:config/system.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 引入配置文件 -->
+    <import resource="datasource-config.xml"/>
+	<import resource="dao-config.xml"/>
+	<import resource="redis-config.xml"/>
+
+    <!-- 一定要先加载service。不然，当controll加载时，此时的service还没有进行事务处理-->
+	<context:component-scan  base-package="com.zyth.web.service"/>
+
+
+    <bean id="aspectBean" class="com.zyth.web.common.aop.RollBackAspect" ></bean>
+
+   <aop:config>
+        <aop:aspect id="RollBackAspect" ref="aspectBean">
+           <!--  配置com.zyth.web.service包下所有类或接口的所有方法 -->
+            <aop:pointcut id="updateService"
+                expression="execution(* com.zyth.web.service.*.*(..))" />
+            <!-- <aop:pointcut id="updateService"
+                expression="execution(* com.zyth.web.service.*.update*(..))||execution(* com.zyth.web.service.*.add*(..))||execution(* com.zyth.web.service.*.batch*(..))||execution(* com.zyth.web.service.*.*Order*(..))" /> -->
+            <aop:before pointcut-ref="updateService" method="doBefore"/>
+            <aop:after pointcut-ref="updateService" method="doAfter"/>
+            <aop:around pointcut-ref="updateService" method="doAround"/>
+            <aop:after-throwing pointcut-ref="updateService" method="doThrowing" throwing="ex"/>
+        </aop:aspect>
+    </aop:config>
+
+   <!-- 暂时未使用未回滚事务 -->
+    <bean id="aspectNewBean" class="com.zyth.web.common.aop.NoBackAspect" ></bean>
+    <aop:config>
+        <aop:aspect id="NoBackAspect" ref="aspectNewBean">
+           <!--  配置com.spring.service包下所有类或接口的所有方法 -->
+            <aop:pointcut id="getService"
+                expression="execution(* com.zyth.web.service.user.*.get*(..))" />
+            <aop:before pointcut-ref="getService" method="doBefore"/>
+            <aop:after pointcut-ref="getService" method="doAfter"/>
+            <aop:around pointcut-ref="getService" method="doAround"/>
+            <aop:after-throwing pointcut-ref="getService" method="doThrowing" throwing="ex"/>
+        </aop:aspect>
+    </aop:config>
+
+</beans>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyth.web.mapper.BeaconLocMapper" >
+  <resultMap id="BaseResultMap" type="com.zyth.web.bean.BeaconLoc" >
+    <result column="beacon_id" property="beaconId" jdbcType="VARCHAR" />
+    <result column="map_x" property="mapX" jdbcType="INTEGER" />
+    <result column="map_y" property="mapY" jdbcType="INTEGER" />
+    <result column="map_z" property="mapZ" jdbcType="INTEGER" />
+  </resultMap>
+  <select id="getAllData" resultMap="BaseResultMap" >
+    select *
+    from beacon_loc
+  </select>
+  <insert id="insert" parameterType="com.zyth.web.bean.BeaconLoc" >
+    insert into beacon_loc (beacon_id, map_x, map_y,
+      map_z)
+    values (#{beaconId,jdbcType=VARCHAR}, #{mapX,jdbcType=INTEGER}, #{mapY,jdbcType=INTEGER},
+      #{mapZ,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyth.web.bean.BeaconLoc" >
+    insert into beacon_loc
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="beaconId != null" >
+        beacon_id,
+      </if>
+      <if test="mapX != null" >
+        map_x,
+      </if>
+      <if test="mapY != null" >
+        map_y,
+      </if>
+      <if test="mapZ != null" >
+        map_z,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="beaconId != null" >
+        #{beaconId,jdbcType=VARCHAR},
+      </if>
+      <if test="mapX != null" >
+        #{mapX,jdbcType=INTEGER},
+      </if>
+      <if test="mapY != null" >
+        #{mapY,jdbcType=INTEGER},
+      </if>
+      <if test="mapZ != null" >
+        #{mapZ,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+</mapper>
