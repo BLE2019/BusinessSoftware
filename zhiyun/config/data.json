@@ -1,0 +1,37 @@
+[
+  {
+    "type": 0,
+    "title": {
+      "用户名": "city",
+      "SN": "county",
+      "人员类别": "schoolId",
+      "人员类型": "schoolName"
+    },
+    "data": {
+      "id":0,
+      "city": "",
+      "county": "",
+      "schoolId": "",
+      "schoolName": ""
+    }
+  },
+  {
+    "type": 1,
+    "title": {
+      "用户名": "schoolId",
+      "SN": "schoolName",
+      "人员类别": "phone",
+      "人员类型": "name",
+      "区域": "department"
+    },
+    "data": {
+      "id":0,
+      "schoolName": "",
+      "schoolId": "",
+      "phone": "",
+      "name": "",
+      "department": ""
+    }
+  }
+
+]
