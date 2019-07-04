@@ -1,0 +1,484 @@
+﻿<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>目标跟踪</title>
+    <link rel="stylesheet" href="lib/bootstrap.min.css">
+
+    <script src="js/jquerylast.js"></script>
+   
+    <link rel="stylesheet" href="lib/bootstrap.min.css">
+    <link href="css/common.css" rel="stylesheet">
+    <link href="css/iconfont/iconfont.css" rel="stylesheet">
+    <style type="text/css">
+
+        #msg {
+            float: left;
+            width: 590px;
+            height: 100%;
+            background-color: #f8f8f8;
+            overflow-y: scroll;
+        }
+
+        #fengMap {
+            background-color: #dcd9d9;
+            margin-left: 600px;
+            height: 100%;
+            position: center;
+        }
+
+        .box {
+            width: 200px;
+            height: 100px;
+            background-color: green;
+            margin: 0px auto;
+        }
+        #myInput {
+            background-image: url('https://static.runoob.com/images/mix/searchicon.png'); /* 搜索按钮 */
+            background-position: 10px 12px; /* 定位搜索按钮 */
+            background-repeat: no-repeat; /* 不重复图片 */
+            width: 90%;
+            font-size: 16px;
+            padding: 12px 20px 12px 40px;
+            border: 1px solid #ddd;
+            margin-bottom: 12px;
+            margin-left:30px;
+            margin-top:20px;
+        }
+        #table td /*设置表格文字左右和上下居中对齐*/ {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div id="msg">
+        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="搜索姓名/SN...">
+        <div style="height:20px;"></div>
+        <table id="table" border="1" cellspacing="0" cellpadding="0" style="width:100%">
+            <tr style="width:90%">
+                <th style="width:20%;height:35px;text-align:center">姓名</th>
+                <th style="width:20%;height:35px;text-align:center">楼层</th>
+                <th style="width:20%;height:35px;text-align:center">区域</th>
+                <th style="width:20%;height:35px;text-align:center">SN</th>
+                <th style="width:20%;height:35px;text-align:center">操作</th>
+                <th style="width:20%;display:none">人员类别</th>
+                <th style="width:20%;display:none">人员类型</th>
+            </tr>
+        </table>
+        <!--<span id="spanFirst">第一页</span>
+        <span id="spanPre">上一页</span>
+        <span id="spanNext">下一页</span>
+        <span id="spanLast">最后一页</span>
+        第<span id="spanPageNum"></span>页/共<span id="spanTotalPage"></span>页-->
+
+    </div>
+    <div id="fengMap" style="width:900px;"></div>
+    <!-- 楼层按钮组 -->
+    <div class="btn-group-vertical group-layer" data-toggle="buttons">
+        <label class="btn btn-primary btn-layer"><i class="icon iconfont">&#xe61c;</i></label>
+        <span id="top" class="btn btn-default"><i class="icon iconfont">&#xe65e;</i></span>
+        <div class="btn-group-vertical layer-list" data-toggle="buttons"></div>
+        <span id="down" class="btn btn-default disabled"><i class="icon iconfont">&#xe65f;</i></span>
+    </div>
+
+
+
+
+   
+    <script src="lib/jquery.nicescroll.js"></script>
+    <script src="lib/bootstrap.min.js"></script>
+    <script src="lib/jquery-2.1.4.min.js"></script>
+    <script src="lib/fengmap.min.js"></script>
+    <script src="js/createBubble.js"></script>
+
+    <script src="js/layerGroup.js"></script>
+    <script src="js/layerList.js"></script>
+    <script>
+        
+     
+        //获取版本号,设置title
+        document.title = '目标跟踪';
+
+
+        //定义全局map变量
+        var map;
+        var fmapID = '10347';
+        var eventID = null;
+        var bubbleObj = null;
+        var layer = null;
+        var layer1 = null;
+
+
+   
+
+        window.onload = function () {
+
+            //// 获取所有用户信息
+           // var url = "http://49.4.66.231:8080/蜂鸟地图/springmvc/hello";
+
+            var url = "";
+           $.getJSON(url, function (data) {
+            
+             
+            var table = document.getElementById("table");
+            for (var i = 0; i < data.length; i++) {
+                var row = table.insertRow(table.rows.length);
+                row.onclick = function () {
+                    var c1 = this.rowIndex;
+                    // alert(c1);
+                    
+                    var c2 = this.children[0].innerHTML;
+                    var c3 = this.children[1].innerHTML;
+                    var c4 = this.children[2].innerHTML;
+                    var c5 = this.children[3].innerHTML;
+                    var c6 = this.children[5].innerHTML;
+                    var c7 = this.children[6].innerHTML;
+
+                    
+                    window.location.href = "target2.html";
+                    window.localStorage.setItem("nami", c2);
+                    window.localStorage.setItem("cell", c3);
+                    window.localStorage.setItem("qu", c4);
+                    window.localStorage.setItem("id", c5);
+                    window.localStorage.setItem("leib", c6);
+                    window.localStorage.setItem("leix", c7);
+                   
+                }
+               
+                var c1 = row.insertCell(0);
+                c1.innerHTML = data[i].name;
+                c1.setAttribute("height", 30);
+                var c2 = row.insertCell(1);
+                c2.innerHTML = data[i].floor;
+                var c3 = row.insertCell(2);
+                c3.innerHTML = data[i].area;
+                var c4 = row.insertCell(3);
+                c4.innerHTML = data[i].sN;
+                var c5 = row.insertCell(4);
+                c5.innerHTML = data[i].type;
+                c5.style.display = "none";
+                var c6 = row.insertCell(5);
+                c6.innerHTML = data[i].workspace;
+                c6.style.display = "none";
+
+
+                var c5 = row.insertCell(4);
+                c5.innerHTML = "<a href='target2.html'>追踪</a>";              
+            }
+
+             
+
+            map = new fengmap.FMMap({
+                //渲染dom
+                container: document.getElementById('fengMap'),
+                //地图数据位置
+                mapServerURL: './data/' + fmapID,
+                //主题数据位置
+                mapThemeURL: 'data/theme',
+                //设置主题
+                defaultThemeName: '2001',
+                // 默认比例尺级别设置为20级
+                defaultMapScaleLevel: 17,
+                //对不可见图层启用透明设置 默认为true
+                focusAlphaMode: true,
+                //关闭聚焦层切换的动画显示
+                focusAnimateMode: false,
+                //对不聚焦图层启用透明设置，当focusAlphaMode = true时有效
+                focusAlpha: 0.1,
+                //开启2维，3维切换的动画显示
+                viewModeAnimateMode: true,
+                //设置最大倾斜角
+                defaultMaxTiltAngle: 90,
+                //设置倾斜角，默认倾斜角为60度
+                defaultTiltAngle: 90,
+                //开发者申请应用下web服务的key
+                key: 'f48456d3e253023bac0fe9c93c65e48d',
+                //开发者申请应用名称
+                appName: 'zhiyun',
+            });
+
+            //打开Fengmap服务器的地图数据和主题
+            map.openMapById(fmapID);
+
+            //地图加载完成事件
+            map.on('loadComplete', window.setInterval(function () {
+                //默认楼层加载完后不显示，需自定义设置要显示的楼层和聚焦层
+                map.visibleGroupIDs = map.groupIDs;
+                map.focusGroupID = map.groupIDs[0];
+                layerGroup.init(map.listGroups, map.focusGroupID);
+
+
+
+                
+                for (var i = 0; i < data.length; i++) {
+                    addMarker(data[i]);
+                    // addMarker(coord[1]);
+
+                    bubble(data[i]);
+
+                }
+                //初始化气泡对象
+                bubbleObj = new createBubble(map);
+                delete1();
+            }, 3000));
+           
+            
+               function bubble(coord) {
+                  
+                   
+                   var group = map.getFMGroup(map.groupIDs[coord.z-1]);
+                  
+                  //返回当前层中第一个textMarkerLayer,如果没有，则自动创建
+                layer = group.getOrCreateLayer('textMarker');
+
+                var gpos = group.mapCoord;
+
+                var position = new fengmap.FMTextMarker({
+                    //设置气泡的x坐标
+                    //x: event.target.x,
+                    x: coord.x + 13464693,
+                    //设置气泡的y坐标
+                    //y: event.target.y,
+                    y: coord.y + 3743351,
+                    //设置气泡的高度
+                    z: map.getGroupHeight(map.focusGroupID) + map.layerLocalHeight+10,
+                    // z: coord.z-1,
+                    //设置气泡的自定义属性
+                    //name: event.target.name
+                    name: coord.name,
+                    //填充色
+                    fillcolor: "255,0,0",
+                    //字体大小
+                    fontsize: 13,
+                    //边框色
+                    strokecolor: "255,255,0",
+                    callback: function () {
+                        // 在图片载入完成后，设置 "一直可见"
+                        position.alwaysShow();
+                    }
+
+                });
+                layer.addMarker(position);
+
+                // alert(position.z);
+                //bubbleObj.bubbledomEvent(position);
+
+            }
+
+
+               //添加Marker
+               function addMarker(coord) {
+                   var group = map.getFMGroup(map.groupIDs[coord.z-1]);
+
+                //返回当前层中第一个imageMarkerLayer,如果没有，则自动创建
+                layer1 = group.getOrCreateLayer('imageMarker');
+
+                var im = new fengmap.FMImageMarker({
+                    name: coord.name,
+                    x: coord.x + 13464693,
+                    y: coord.y + 3743351,
+                    z: coord.z-1,
+                    url: 'image/blueImageMarker.png',
+                    //设置图片路径
+                    size: 32,
+                    //设置图片显示尺寸
+                    callback: function () { },
+                    update: function (currentXY) {
+                        console.log("当前坐标：" + currentXY.x + "," + currentXY.y);
+                    }
+                });
+                layer1.addMarker(im);
+
+               };
+           });
+        };
+
+
+        function delete1() {
+            if (layer || layer1) {
+
+
+                layer.removeAll();
+                layer1.removeAll();
+            }
+
+        }
+
+        function jump(a) {
+            var c1 = a.rowIndex;
+            var c2 = a.children[1].innerHTML;
+            alert(c2);
+          
+        }
+
+        function myFunction() {
+            // 声明变量
+            var input, filter, table, tr, td, i,td1;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("table");
+            tr = table.getElementsByTagName("tr");
+
+            // 循环表格每一行，查找匹配项
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                td1 = tr[i].getElementsByTagName("td")[3];
+                if (td || td1) {
+                    if (td.innerHTML.toUpperCase().indexOf(filter) > -1 || td1.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+
+        //var theTable = document.getElementById("table");
+        //var totalPage = document.getElementById("spanTotalPage");
+        //var pageNum = document.getElementById("spanPageNum");
+
+        //var spanPre = document.getElementById("spanPre");
+        //var spanNext = document.getElementById("spanNext");
+        //var spanFirst = document.getElementById("spanFirst");
+        //var spanLast = document.getElementById("spanLast");
+
+        //var totalPaget = document.getElementById("spanTotalPaget");
+        //var pageNumt = document.getElementById("spanPageNumt");
+
+        //var spanPret = document.getElementById("spanPret");
+        //var spanNextt = document.getElementById("spanNextt");
+        //var spanFirstt = document.getElementById("spanFirstt");
+        //var spanLastt = document.getElementById("spanLastt");
+
+        //var numberRowsInTable = theTable.rows.length;
+        //var pageSize = 4;
+        //var page = 1;
+
+        ////下一页
+        //function next() {
+
+        //    hideTable();
+
+        //    currentRow = pageSize * page;
+        //    maxRow = currentRow + pageSize;
+        //    if (maxRow > numberRowsInTable) maxRow = numberRowsInTable;
+        //    for (var i = currentRow; i < maxRow; i++) {
+        //        theTable.rows[i].style.display = '';
+        //    }
+        //    page++;
+
+        //    if (maxRow == numberRowsInTable) { nextText(); lastText(); }
+        //    showPage();
+        //    preLink();
+        //    firstLink();
+        //}
+
+        ////上一页
+        //function pre() {
+
+        //    hideTable();
+
+        //    page--;
+
+        //    currentRow = pageSize * page;
+        //    maxRow = currentRow - pageSize;
+        //    if (currentRow > numberRowsInTable) currentRow = numberRowsInTable;
+        //    for (var i = maxRow; i < currentRow; i++) {
+        //        theTable.rows[i].style.display = '';
+        //    }
+
+
+        //    if (maxRow == 0) { preText(); firstText(); }
+        //    showPage();
+        //    nextLink();
+        //    lastLink();
+        //}
+
+        ////第一页
+        //function first() {
+        //    hideTable();
+        //    page = 1;
+        //    for (var i = 0; i < pageSize; i++) {
+        //        theTable.rows[i].style.display = '';
+        //    }
+        //    showPage();
+
+        //    preText();
+        //    nextLink();
+        //    lastLink();
+        //}
+
+        ////最后一页
+        //function last() {
+        //    hideTable();
+        //    page = pageCount();
+        //    currentRow = pageSize * (page - 1);
+        //    for (var i = currentRow; i < numberRowsInTable; i++) {
+        //        theTable.rows[i].style.display = '';
+        //    }
+        //    showPage();
+
+        //    preLink();
+        //    nextText();
+        //    firstLink();
+        //}
+
+        //function hideTable() {
+        //    for (var i = 0; i < numberRowsInTable; i++) {
+        //        theTable.rows[i].style.display = 'none';
+        //    }
+        //}
+
+        //function showPage() {
+        //    pageNum.innerHTML = page;
+        //    pageNumt.innerHTML = page;
+        //}
+
+        ////总共页数
+        //function pageCount() {
+        //    var count = 0;
+        //    if (numberRowsInTable % pageSize != 0) count = 1;
+        //    return parseInt(numberRowsInTable / pageSize) + count;
+        //}
+
+        ////显示链接
+        //function preLink() { spanPre.innerHTML = "<a href='javascript:pre();'>上一页</a>"; spanPret.innerHTML = "<a href='javascript:pre();'>上一页</a>"; }
+        //function preText() { spanPre.innerHTML = "上一页"; spanPret.innerHTML = "上一页"; }
+
+        //function nextLink() { spanNext.innerHTML = "<a href='javascript:next();'>下一页</a>"; spanNextt.innerHTML = "<a href='javascript:next();'>下一页</a>"; }
+        //function nextText() { spanNext.innerHTML = "下一页"; spanNextt.innerHTML = "下一页"; }
+
+        //function firstLink() { spanFirst.innerHTML = "<a href='javascript:first();'>第一页</a>"; spanFirstt.innerHTML = "<a href='javascript:first();'>第一页</a>"; }
+        //function firstText() { spanFirst.innerHTML = "第一页"; spanFirstt.innerHTML = "第一页"; }
+
+        //function lastLink() { spanLast.innerHTML = "<a href='javascript:last();'>最后一页</a>"; spanLastt.innerHTML = "<a href='javascript:last();'>最后一页</a>"; }
+        //function lastText() { spanLast.innerHTML = "最后一页"; spanLastt.innerHTML = "最后一页"; }
+
+        ////隐藏表格
+        //function hide() {
+        //    for (var i = pageSize; i < numberRowsInTable; i++) {
+        //        theTable.rows[i].style.display = 'none';
+        //    }
+
+        //    totalPage.innerHTML = pageCount();
+        //    pageNum.innerHTML = '1';
+
+        //    totalPaget.innerHTML = pageCount();
+        //    pageNumt.innerHTML = '1';
+
+        //    nextLink();
+        //    lastLink();
+        //}
+
+        //hide();
+    </script>
+</body>
+
+</html>
