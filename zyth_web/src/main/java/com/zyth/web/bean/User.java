@@ -1,7 +1,16 @@
 package com.zyth.web.bean;
 
-public class User {
-    private Integer userId;
+import java.io.Serializable;
+
+import com.zyth.web.bean.vo.PageVO;
+
+public class User extends PageVO implements Serializable {
+    /**
+	 *
+	 */
+	private static final long serialVersionUID = 6240379922298815598L;
+
+	private Integer userId;
 
     private String userName;
 
@@ -10,6 +19,9 @@ public class User {
     private Integer sex;
 
     private String deveui;
+
+    private int capcity;
+    private int isOnline;
 
     public Integer getUserId() {
         return userId;
@@ -50,4 +62,20 @@ public class User {
     public void setDeveui(String deveui) {
         this.deveui = deveui == null ? null : deveui.trim();
     }
+
+	public int getCapcity() {
+		return capcity;
+	}
+
+	public void setCapcity(int capcity) {
+		this.capcity = capcity;
+	}
+
+	public int getIsOnline() {
+		return isOnline;
+	}
+
+	public void setIsOnline(int isOnline) {
+		this.isOnline = isOnline;
+	}
 }

@@ -3,18 +3,24 @@
 <mapper namespace="com.zyth.web.mapper.AreaMapper" >
   <resultMap id="BaseResultMap" type="com.zyth.web.bean.Area" >
     <id column="area_id" property="areaId" jdbcType="INTEGER" />
-    <result column="map_x0" property="mapX0" jdbcType="VARCHAR" />
-    <result column="map_y0" property="mapY0" jdbcType="VARCHAR" />
-    <result column="map_x1" property="mapX1" jdbcType="VARCHAR" />
-    <result column="map_y1" property="mapY1" jdbcType="VARCHAR" />
-    <result column="map_z" property="mapZ" jdbcType="VARCHAR" />
+    <result column="map_x0" property="mapX0" jdbcType="INTEGER" />
+    <result column="map_y0" property="mapY0" jdbcType="INTEGER" />
+    <result column="map_x1" property="mapX1" jdbcType="INTEGER" />
+    <result column="map_y1" property="mapY1" jdbcType="INTEGER" />
+    <result column="map_z" property="mapZ" jdbcType="INTEGER" />
     <result column="area_name" property="areaName" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     area_id, map_x0, map_y0, map_x1, map_y1, map_z, area_name
   </sql>
+
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from area
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from area
     where area_id = #{areaId,jdbcType=INTEGER}
@@ -24,11 +30,11 @@
     where area_id = #{areaId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.zyth.web.bean.Area" >
-    insert into area (area_id, map_x0, map_y0, 
-      map_x1, map_y1, map_z, 
+    insert into area (area_id, map_x0, map_y0,
+      map_x1, map_y1, map_z,
       area_name)
-    values (#{areaId,jdbcType=INTEGER}, #{mapX0,jdbcType=VARCHAR}, #{mapY0,jdbcType=VARCHAR}, 
-      #{mapX1,jdbcType=VARCHAR}, #{mapY1,jdbcType=VARCHAR}, #{mapZ,jdbcType=VARCHAR}, 
+    values (#{areaId,jdbcType=INTEGER}, #{mapX0,jdbcType=VARCHAR}, #{mapY0,jdbcType=VARCHAR},
+      #{mapX1,jdbcType=VARCHAR}, #{mapY1,jdbcType=VARCHAR}, #{mapZ,jdbcType=VARCHAR},
       #{areaName,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.zyth.web.bean.Area" >

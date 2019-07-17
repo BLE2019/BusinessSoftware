@@ -8,13 +8,15 @@
     <result column="beaconnum" property="beaconnum" jdbcType="INTEGER" />
     <result column="beaconmsg" property="beaconmsg" jdbcType="VARCHAR" />
     <result column="rcvtime" property="rcvtime" jdbcType="TIMESTAMP" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
     <result column="rsv" property="rsv" jdbcType="VARCHAR" />
   </resultMap>
   <select id="getLatestData" resultMap="BaseResultMap" parameterType="java.util.Date" >
-    select *
-    from beacon
+    select *,b.user_id
+    from beacon a
+    inner join user b on a.deveui = b.deveui
     <if test="deveui != null" >
-    	where rcvtime > #{latestTime,jdbcType=TIMESTAMP}
+    	where a.rcvtime > #{latestTime,jdbcType=TIMESTAMP}
     </if>
   </select>
 

@@ -113,17 +113,7 @@
 
               <h3 class="box-title">人数统计</h3>
             </div>
-            <div class="box-body">
-				<div>
-					总人数：200
-				</div>
-				<div>
-					区域一：100
-				</div>
-				<div>
-					区域二：100
-				</div>
-
+            <div class="box-body" id="areaCountDiv">
             </div>
           </div>
         </div>
@@ -147,11 +137,11 @@
 <script>
 
 
-	//refresh();
 	//定义全局map变量
 		var map;
 		var fmapID = '10347';
 		var locationMarker = null;
+		var locationMap=new Map();
 
 		window.onload = function() {
 			map = new fengmap.FMMap({
@@ -188,13 +178,11 @@
 				map.focusGroupID = map.groupIDs[0];
 				layerGroup.init(map.listGroups, map.focusGroupID);
 
-				//循环执行，每隔5秒钟执行一次
-				//window.setInterval(refresh, 5000);
 				init();
 			});
 		};
 					//创建定位点标注
-		function addLocationMarker(x,y,z,hatColor) {
+		function addLocationMarker(x,y,z,hatColor,id) {
 			locationMarker = new fengmap.FMLocationMarker({
 				//设置图片的路径
 				url: './img/'+hatColor+'.png',
@@ -216,31 +204,47 @@
 				//设置定位点的高于楼层多少
 				zOffset: z+1,
 			});
+			locationMap.set(id,locationMarker);
 		};
 
+		function moveLocationMarker(oldLoc,x,y,z){
+			//如果楼层没有改变，移动位置
+			oldLoc.moveTo({
+                x:x,
+                y:y,
+                time: 0.5
+			})
+		}
+
 		function refresh() {
-			//存储生成的html
-			var redCount = 0;
-			for(var i=0;i<20;i++){
-				var rx = Math.ceil(-200+Math.random()*400);
-				var ry = Math.ceil(-200+Math.random()*400);
-				var rz = Math.ceil(Math.random()*11);
+			//调用后台方法
+			$.ajax({
+				type: "post",
+				url: apiUrl+'location/getData.htm',
+				contentType: "application/json",
+				sync:false,
+				success: function (result) {
+					var dataList = result.data.mapData;
+					//记录报错信息总数
+					var redCount = 0;
+					$(dataList).each(function(i,data){
+						//判断是否存在对应的点
+						var oldLoc = locationMap.get(data.deveui);
+						if(oldLoc == null){
+							//判断是否是警报用户
+							var hatColor = 'yellow_hat';
+							if(data.isSos){
+								hatColor = 'red_hat';
+							}
+							//在地图上添加对应的点
+							addLocationMarker(13464693 + data.mapX,3743351+data.mapY,data.mapZ,hatColor,data.deveui);
+						}else{
+							moveLocationMarker(oldLoc,13464693 + data.mapX,3743351+data.mapY,data.mapZ);
+						}
 
-				var rcolor = Math.ceil(100*Math.random()-1);
-				var hatColor = 'yellow_hat';
-				if(rcolor>98){
-					hatColor = 'red_hat';
-					redCount++;
+					})
 				}
-				addLocationMarker(13464693 + rx,3743351+ry,rz,hatColor);
-
-			}
-			if(redCount == 0){
-				$("#error_msg").css('display','none');
-			}else{
-				$("#error_msg").css('display','block');
-				$("#error_msg span").html(redCount);
-			}
+			});
 		}
 
 		//页面初始化
@@ -248,14 +252,15 @@
 			//调用后台方法
 			$.ajax({
 				type: "post",
-				url: apiUrl+'location/getInitData.htm',
+				url: apiUrl+'location/getData.htm',
 				contentType: "application/json",
 				sync:false,
 				success: function (result) {
-					var dataList = result.data;
+					var mapList = result.data.mapData;
+					var areaList = result.data.areaData;
 					//记录报错信息总数
 					var redCount = 0;
-					$(dataList).each(function(i,data){
+					$(mapList).each(function(i,data){
 						//判断是否是警报用户
 						var hatColor = 'yellow_hat';
 						if(data.isSos){
@@ -263,7 +268,29 @@
 						}
 						//在地图上添加对应的点
 						addLocationMarker(13464693 + data.mapX,3743351+data.mapY,data.mapZ,hatColor);
+						//循环执行，每隔5秒钟执行一次
+						window.setInterval(refresh, 5000);
 					})
+					var areaHtml = "";
+					var currentZ = "";
+					var currentZHtml = "";
+					var currentZCount = 0;
+					var totalCount = 0;
+					$(areaList).each(function(i,data){
+						//楼层变化
+						if(data.mapZ != currentZ){
+							if(currentZ!=""){
+								areaHtml += "<div>&nbsp;&nbsp;"+currentZ+"层总人数:"+currentZCount+"</div>" + currentZHtml;
+								currentZHtml = "";
+							}
+							currentZ = data.mapZ;
+						}
+						currentZHtml += "<div>&nbsp;&nbsp;&nbsp;&nbsp;"+data.areaName+":"+data.userCount+"</div>";
+						currentZCount += data.userCount;
+						totalCount += data.userCount;
+					})
+					areaHtml += "<div>&nbsp;&nbsp;"+currentZ+"层总人数:"+currentZCount+"</div>" + currentZHtml;
+					$("#areaCountDiv").html("<div>总人数:"+totalCount+"</div>" + areaHtml);
 				}
 			});
 		}
