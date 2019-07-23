@@ -22,6 +22,7 @@ import com.zyth.web.bean.LocationFmap;
 import com.zyth.web.bean.vo.LocationFVO;
 import com.zyth.web.common.basic.JsonResult;
 import com.zyth.web.common.basic.SessionManager;
+import com.zyth.web.service.LocationServiceApi;
 import com.zyth.web.service.OperatorServiceApi;
 
 
@@ -33,6 +34,9 @@ public class LocationController extends BaseController {
 
 	@Resource
 	private OperatorServiceApi operatorService;
+
+	@Resource
+	private LocationServiceApi locationService;
 
 	@RequestMapping("getData.htm")
 	@ResponseBody
@@ -64,4 +68,20 @@ public class LocationController extends BaseController {
 		}
 	}
 
+	@RequestMapping("getHistory.htm")
+	@ResponseBody
+	public JsonResult getHistory(LocationFVO locationFVO, HttpServletRequest request,
+			HttpServletResponse response) {
+		JsonResult json = new JsonResult();
+		try{
+
+			json.setData(locationService.getHistory(locationFVO));
+			json.setOk(true);
+			return json;
+		}catch(Exception e){
+			logger.error(e.getMessage(),e);
+			json.setOk(false);
+			return json;
+		}
+	}
 }

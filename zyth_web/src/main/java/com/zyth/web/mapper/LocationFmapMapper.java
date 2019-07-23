@@ -12,4 +12,6 @@ public interface LocationFmapMapper {
     int updateLatest(LocationFmap record);
 
 	List<LocationFVO> getLatestData();
+	List<LocationFVO> getHistory(LocationFVO locationFVO);
+
 }

@@ -68,7 +68,6 @@ public class LocationService implements LocationServiceApi {
 		    		  currentDataF = JSON.parseObject(currentDataFStr, HashMap.class);
 		    	  }
 
-
 		    	  //TODO 待优化，不用每次都取，获取蓝牙信标数据
 		    	  List<BeaconLoc> beaconLocList = beaconLocMapper.getAllData();
 		    	  HashMap<String, BeaconLoc> beaconLocMap = new HashMap<String, BeaconLoc>();
@@ -191,6 +190,9 @@ public class LocationService implements LocationServiceApi {
 		    		}
 	    			redis.opsForValue().set("areaDataStr",JSON.toJSONString(areaData));
 
+			    	//更新latestTime
+			    	redis.opsForValue().set("latestTime",latestTime);
+
 	    			//将计算好的数据保存到数据库中
 					locationFmapMapper.insertSelective(locationFmap);
 				}
@@ -203,6 +205,10 @@ public class LocationService implements LocationServiceApi {
 	                    .newSingleThreadScheduledExecutor();
 	    //每5分钟执行一次
 	    service.scheduleAtFixedRate(runnable, 0, 5, TimeUnit.MINUTES);
+	}
+
+	public List<LocationFVO> getHistory(LocationFVO locationFVO) {
+		return locationFmapMapper.getHistory(locationFVO);
 	}
 
 

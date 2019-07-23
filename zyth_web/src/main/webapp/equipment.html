@@ -84,7 +84,6 @@
 								<th tabindex="0"  rowspan="1" colspan="1" >姓名</th>
 								<th tabindex="0"  rowspan="1" colspan="1" >剩余电量</th>
 								<th tabindex="0"  rowspan="1" colspan="1" >状态信息</th>
-								<th tabindex="0"  rowspan="1" colspan="1" >操作</th>
 							</tr>
 							</thead>
 						  <tbody id="dataBody">
@@ -100,59 +99,6 @@
     </section>
   </div>
 
-		<div class="modal fade" id="modal-default" style="display: none;">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">×</span></button>
-                <h4 class="modal-title">新增用户</h4>
-              </div>
-              <div class="modal-body">
-                <form class="form-horizontal" id="tagForm">
-					<fieldset>
-						<div class="form-group">
-						  <label for="inputEmail3" class="col-sm-2 control-label">姓名</label>
-						  <div class="col-sm-4">
-							<input type="text" class="form-control" />
-						  </div>
-						</div>
-						<div class="form-group">
-						  <label for="inputEmail3" class="col-sm-2 control-label">性别</label>
-						  <div class="col-sm-4">
-							<input type="radio"  />男
-							<input type="radio"  />女
-						  </div>
-						</div>
-						<div class="form-group">
-						  <label for="inputEmail3" class="col-sm-2 control-label">SN</label>
-						  <div class="col-sm-4">
-							<input type="text" class="form-control" />
-						  </div>
-						</div>
-						<div class="form-group">
-						  <label for="inputEmail3" class="col-sm-2 control-label">人员类型</label>
-						  <div class="col-sm-4">
-							<select class="form-control">
-								<option>管理信息处</option>
-								<option>1号车间</option>
-								<option>2号车间</option>
-							  </select>
-						  </div>
-						</div>
-
-					</fieldset>
-				  </form>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary">保存</button>
-              </div>
-            </div>
-            <!-- /.modal-content -->
-          </div>
-          <!-- /.modal-dialog -->
-        </div>
 
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -194,8 +140,16 @@
 							},
 							{ data: 'deveui' },
 							{ data: 'userName' },
-							{ data: 'capcity'},
-							{ data: 'isOnline' }
+							{ data: 'capcity',
+								"render": function ( data, type, full, meta ) {
+									return '<span class="label label-success">50%-100%</span>';
+								}
+							},
+							{ data: 'isOnline',
+								"render": function ( data, type, full, meta ) {
+									return '<span class="label label-success">在线</span>';
+								}
+							}
 						]
 				    });
 				}

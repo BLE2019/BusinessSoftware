@@ -16,7 +16,12 @@
     from location_fmap
     where is_latest = 1
   </select>
-
+  <select id="getHistory" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select *
+    from location_fmap
+    where user_id = 1
+    order by rcvtime
+  </select>
   <insert id="insert" parameterType="com.zyth.web.bean.LocationFmap" >
     insert into location_fmap (deveui, user_id, map_x,
       map_y, map_z, rcvtime,

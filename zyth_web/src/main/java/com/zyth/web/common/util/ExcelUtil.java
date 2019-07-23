@@ -95,26 +95,9 @@ public class ExcelUtil<T> {
 
         // 声明一个画图的顶级管理器
         HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
-        // 定义注释的大小和位置,详见文档
-        HSSFComment comment = patriarch.createComment(new HSSFClientAnchor(0, 0, 0, 0, (short) 4, 2, (short) 6, 5));
-        // 设置注释内容
-        comment.setString(new HSSFRichTextString("可以在POI中添加注释！"));
-        // 设置注释作者，当鼠标移动到单元格上是可以在状态栏中看到该内容.
-        comment.setAuthor("leno");
-
-        //标题
-        HSSFRow row = sheet.createRow(0);
-        // 单元格合并
-        // 四个参数分别是：起始行，结束行，起始列，结束列
-        Integer len = headers.length;
-        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, len-1));
-        HSSFCell celltitle =  row.createCell(0);
-        celltitle.setCellStyle(style3);
-        celltitle.setCellValue(title);
-
 
         //产生表格标题行
-        HSSFRow row2 = sheet.createRow(2);
+        HSSFRow row2 = sheet.createRow(0);
         for (short i = 0; i < headers.length; i++) {
             HSSFCell cell = row2.createCell(i);
             cell.setCellStyle(style);
@@ -122,13 +105,12 @@ public class ExcelUtil<T> {
             cell.setCellValue(text);
         }
 
-
         //遍历集合数据，产生数据行
         Iterator<T> it = dataset.iterator();
-        int index = 2;
+        int index = 0;
         while (it.hasNext()) {
             index++;
-            row = sheet.createRow(index);
+            HSSFRow row = sheet.createRow(index);
             T t = it.next();
             //利用反射，根据javabean属性的先后顺序，动态调用getXxx()方法得到属性值
             //Field[] fields = t.getClass().getDeclaredFields();、

@@ -127,18 +127,15 @@
                 <form class="form-horizontal" id="tagForm">
 					<fieldset>
 						<div class="form-group">
-						  <label for="inputEmail3" class="col-sm-2 control-label">姓名</label>
+						  <label for="inputEmail3" class="col-sm-2 control-label">模板下载</label>
 						  <div class="col-sm-4">
-							<input type="text" class="form-control" id="userName" name="userName" />
+							<input type="button" class="btn" value="下载" id="btn_downModal" />
 						  </div>
 						</div>
 						<div class="form-group">
-						  <label for="inputEmail3" class="col-sm-2 control-label">性别</label>
+						  <label for="inputEmail3" class="col-sm-2 control-label">选择文件</label>
 						  <div class="col-sm-4">
-							<select class="form-control" id="sex" name="sex" >
-								<option value="0">男</option>
-								<option value="1">女</option>
-							  </select>
+							<input type="file" class="form-control" id="file_up" name="file_up" />
 						  </div>
 						</div>
 					</fieldset>
@@ -325,8 +322,40 @@
 			//批量导入按钮
 			$("#up_btn").click(function(){
 				$('#modal-up').modal('show');
-			}
+			});
+			//下载模板
+			$("#btn_downModal").click(function(e){
+				location.href = "user/downModal.htm";
+				e.preventDefault();
+			})
+			//导出数据
+			$("#down_btn").click(function(e){
+				location.href = "user/downLoad.htm";
+				e.preventDefault();
+			})
 
+			//上传按钮
+			$("#btn_uploadFile").click(function(){
+			    var formData = new FormData();
+				formData.append("file",$("#file_up")[0].files[0]);
+				$.ajax({
+					url:'user/upload.htm?t='+new Date(),
+					type:'post',
+					data: formData,
+					contentType: false,
+					processData: false,
+					success:function(res){
+						console.log(res.data);
+						if(res.data["code"]=="succ"){
+							alert('成功');
+						}else if(res.data["code"]=="err"){
+							alert('失败');
+						}else{
+							console.log(res);
+						}
+					}
+				})
+			});
 
 			//新增/修改保存按钮
 			$("#btn_save").click(function(){
