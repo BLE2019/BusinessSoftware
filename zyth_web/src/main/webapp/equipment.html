@@ -9,8 +9,9 @@
   <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
   <link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css">
   <link rel="stylesheet" href="css/AdminLTE.min.css">
-  <link rel="stylesheet" href="css/skins/skin-blue.css">  
+  <link rel="stylesheet" href="css/skins/skin-blue.css">
   <link rel="stylesheet" href="css/common.css">
+  <link rel='stylesheet' href='css/jquery.dataTables.min.css'>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -35,7 +36,7 @@
         </ul>
       </div>
     </nav>
-	
+
   </header>
   <aside class="main-sidebar">
     <section class="sidebar">
@@ -54,11 +55,13 @@
               <h3 class="box-title">查询条件</h3>
             </div>
 			<div class="query-box">
-				<label>姓名:</label>
-				<input type="text" />
-				<label>SN:</label>
-				<input type="text" />
-				<button type="button" class="btn btn-info">查询</button>
+				<form id="searchForm" class="form-horizontal">
+					<label>姓名:</label>
+					<input type="text" />
+					<label>SN:</label>
+					<input type="text" />
+					<button type="button" class="btn btn-info">查询</button>
+				</form>
 			</div>
 		  </div>
 		</div>
@@ -69,122 +72,26 @@
             <div class="box-header">
               <h3 class="box-title">设备列表</h3>
             </div>
-			<div>
-
-				<a class="btn btn-app" id="add_btn" data-toggle="modal" data-target="#modal-default">
-					<i class="fa fa-plus"></i> 添加设备
-				</a>
-				<a class="btn btn-app">
-					<i class="fa fa-minus"></i> 批量删除
-				</a>
-				<a class="btn btn-app">
-					<i class="fa fa-sign-in"></i> 批量导入
-				</a>
-				<a class="btn btn-app">
-					<i class="fa fa-sign-out"></i> 批量导出
-				</a>
-				
-			</div>
-            <!-- /.box-header -->
             <div class="box-body">
-              <div  class="dataTables_wrapper form-inline dt-bootstrap"><div class="row"><div class="col-sm-6"></div><div class="col-sm-6"></div></div><div class="row"><div class="col-sm-12">
-			  <table class="table table-bordered table-hover dataTable" role="grid" >
-                <thead>
-                <tr role="row">
-				<th  ><input type="checkbox" /></th>
-				<th tabindex="0"  rowspan="1" colspan="1" >SN</th>
-				<th tabindex="0"  rowspan="1" colspan="1" >姓名</th>
-				<th tabindex="0"  rowspan="1" colspan="1" >剩余电量</th>
-				<th tabindex="0"  rowspan="1" colspan="1" >状态信息</th>
-				<th tabindex="0"  rowspan="1" colspan="1" >操作</th>
-				</tr>
-                </thead>
-                <tbody>
-                <tr role="row" >
-                  <td class=""><input type="checkbox" /></td>
-                  <td>SN310021554</td>
-                  <td class="">张三</td>
-                  <td><span class="label label-success">50%-100%</span></td>
-                  <td><span class="label label-success">在线</span></td>
-                  <td><button type="button" class="btn btn-danger">删除</button></td>
-                </tr>
-                <tr role="row">
-                  <td class=""><input type="checkbox" /></td>
-                  <td>SN310021555</td>
-                  <td class="">李四</td>
-                  <td><span class="label label-warning">25%-50%</span></td>
-                  <td><span class="label label-primary">离线</span></td>
-                  <td><button type="button" class="btn btn-danger">删除</button></td>
-                </tr>
-                <tr role="row" >
-                  <td class=""><input type="checkbox" /></td>
-                  <td>SN310021556</td>
-                  <td class="">王二</td>
-                  <td><span class="label label-danger">0%-25%</span></td>
-                  <td><span class="label label-primary">离线</span></td>
-                  <td><button type="button" class="btn btn-danger">删除</button></td>
-                </tr>
-                <tr role="row">
-                  <td class=""><input type="checkbox" /></td>
-                  <td>SN310021557</td>
-                  <td class="">赵一</td>
-                  <td><span class="label label-success">50%-100%</span></td>
-                  <td><span class="label label-success">在线</span></td>
-                  <td><button type="button" class="btn btn-danger">删除</button></td>
-                </tr>
-                <tr role="row" >
-                  <td class=""><input type="checkbox" /></td>
-                  <td>SN310021554</td>
-                  <td class="">张三</td>
-                  <td><span class="label label-success">50%-100%</span></td>
-                  <td><span class="label label-success">在线</span></td>
-                  <td><button type="button" class="btn btn-danger">删除</button></td>
-                </tr>
-                <tr role="row">
-                  <td class=""><input type="checkbox" /></td>
-                  <td>SN310021554</td>
-                  <td class="">李四</td>
-                  <td><span class="label label-danger">0%-25%</span></td>
-                  <td><span class="label label-primary">离线</span></td>
-                  <td><button type="button" class="btn btn-danger">删除</button></td>
-                </tr>
-                <tr role="row" >
-                  <td class=""><input type="checkbox" /></td>
-                  <td>SN310021554</td>
-                  <td class="">张三</td>
-                  <td><span class="label label-danger">0%-25%</span></td>
-                  <td><span class="label label-primary">离线</span></td>
-                  <td><button type="button" class="btn btn-danger">删除</button></td>
-                </tr>
-                <tr role="row">
-                  <td class=""><input type="checkbox" /></td>
-                  <td>SN310021554</td>
-                  <td class="">李四</td>
-                  <td><span class="label label-success">50%-100%</span></td>
-                  <td><span class="label label-primary">离线</span></td>
-                  <td><button type="button" class="btn btn-danger">删除</button></td>
-                </tr>
-				
-                <tr role="row" >
-                  <td class=""><input type="checkbox" /></td>
-                  <td>SN310021554</td>
-                  <td class="">张三</td>
-                  <td><span class="label label-warning">25%-50%</span></td>
-                  <td><span class="label label-success">在线</span></td>
-                  <td><button type="button" class="btn btn-danger">删除</button></td>
-                </tr>
-                <tr role="row">
-                  <td class=""><input type="checkbox" /></td>
-                  <td>SN310021554</td>
-                  <td class="">李四</td>
-                  <td><span class="label label-warning">25%-50%</span></td>
-                  <td><span class="label label-success">在线</span></td>
-                  <td><button type="button" class="btn btn-danger">删除</button></td>
-                </tr>
-				
-				</tbody>
-              </table></div></div>
-			  <div class="row"><div class="col-sm-5"><div class="dataTables_info" id="example2_info" role="status" aria-live="polite">共57条数据，第1到10条</div></div><div class="col-sm-7"><div class="dataTables_paginate paging_simple_numbers" id="example2_paginate"><ul class="pagination"><li class="paginate_button previous disabled" id="example2_previous"><a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0">上一页</a></li><li class="paginate_button active"><a href="#" aria-controls="example2" data-dt-idx="1" tabindex="0">1</a></li><li class="paginate_button "><a href="#" aria-controls="example2" data-dt-idx="2" tabindex="0">2</a></li><li class="paginate_button "><a href="#" aria-controls="example2" data-dt-idx="3" tabindex="0">3</a></li><li class="paginate_button "><a href="#" aria-controls="example2" data-dt-idx="4" tabindex="0">4</a></li><li class="paginate_button "><a href="#" aria-controls="example2" data-dt-idx="5" tabindex="0">5</a></li><li class="paginate_button "><a href="#" aria-controls="example2" data-dt-idx="6" tabindex="0">6</a></li><li class="paginate_button next" id="example2_next"><a href="#" aria-controls="example2" data-dt-idx="7" tabindex="0">下一页</a></li></ul></div></div></div></div>
+              <div  class="dataTables_wrapper form-inline dt-bootstrap">
+				<div class="row">
+					<div class="col-sm-12">
+						<table class="table table-bordered" id="dataTab">
+							<thead>
+							<tr role="row">
+								<th><input type="checkbox" /></th>
+								<th tabindex="0"  rowspan="1" colspan="1" >SN</th>
+								<th tabindex="0"  rowspan="1" colspan="1" >姓名</th>
+								<th tabindex="0"  rowspan="1" colspan="1" >剩余电量</th>
+								<th tabindex="0"  rowspan="1" colspan="1" >状态信息</th>
+							</tr>
+							</thead>
+						  <tbody id="dataBody">
+						  </tbody>
+						</table>
+					</div>
+				</div>
+			  </div>
             </div>
           </div>
         </div>
@@ -192,66 +99,62 @@
     </section>
   </div>
 
-		<div class="modal fade" id="modal-default" style="display: none;">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">×</span></button>
-                <h4 class="modal-title">新增用户</h4>
-              </div>
-              <div class="modal-body">
-                <form class="form-horizontal" id="tagForm">
-					<fieldset>
-						<div class="form-group">
-						  <label for="inputEmail3" class="col-sm-2 control-label">姓名</label>
-						  <div class="col-sm-4">
-							<input type="text" class="form-control" />
-						  </div>
-						</div>						
-						<div class="form-group">
-						  <label for="inputEmail3" class="col-sm-2 control-label">性别</label>
-						  <div class="col-sm-4">
-							<input type="radio"  />男
-							<input type="radio"  />女
-						  </div>
-						</div>
-						<div class="form-group">
-						  <label for="inputEmail3" class="col-sm-2 control-label">SN</label>
-						  <div class="col-sm-4">
-							<input type="text" class="form-control" />
-						  </div>
-						</div>	
-						<div class="form-group">
-						  <label for="inputEmail3" class="col-sm-2 control-label">人员类型</label>
-						  <div class="col-sm-4">
-							<select class="form-control">
-								<option>管理信息处</option>
-								<option>1号车间</option>
-								<option>2号车间</option>
-							  </select>
-						  </div>
-						</div>		
-						
-					</fieldset>
-				  </form>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary">保存</button>
-              </div>
-            </div>
-            <!-- /.modal-content -->
-          </div>
-          <!-- /.modal-dialog -->
-        </div>
-		
+
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="js/adminlte.min.js"></script>
 <script src="js/common.js"></script>
+<script src='js/jquery.dataTables.min.js'></script>
 
 	<script>
+		$(function(){
+			query();
+			$("#query").click(function(){
+				query();
+			})
+			var dataTab;
+			//查询数据
+			function query(){
+				var queryData = $('#searchForm').serialize();
+				if(dataTab){
+					dataTab.settings()[0].ajax.url='user/getList.htm?t='+new Date()+"&"+queryData;
+					dataTab.ajax.reload();
+				}else{
+					dataTab = $('#dataTab').DataTable({
+						"ajax" : {
+							type: "post",
+							url: 'user/getList.htm?t='+new Date()+"&"+queryData,
+							dataSrc:function(data){
+								return data.data;
+							}
+						},
+						"bJQueryUI": true,
+						"processing": true,
+						"serverSide": true,
+						"oLanguage": dtLang,
+						columns:[
+							{ data: 'userId',
+								"render": function ( data, type, full, meta ) {
+									return '<input type="checkbox" >';
+								}
+							},
+							{ data: 'deveui' },
+							{ data: 'userName' },
+							{ data: 'capcity',
+								"render": function ( data, type, full, meta ) {
+									return '<span class="label label-success">50%-100%</span>';
+								}
+							},
+							{ data: 'isOnline',
+								"render": function ( data, type, full, meta ) {
+									return '<span class="label label-success">在线</span>';
+								}
+							}
+						]
+				    });
+				}
+			}
+		});
 
 	</script>
 </body>

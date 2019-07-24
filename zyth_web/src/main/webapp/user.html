@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="css/AdminLTE.min.css">
   <link rel="stylesheet" href="css/skins/skin-blue.css">
   <link rel="stylesheet" href="css/common.css">
+  <link rel='stylesheet' href='css/jquery.dataTables.min.css'>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -35,7 +36,7 @@
         </ul>
       </div>
     </nav>
-	
+
   </header>
   <aside class="main-sidebar">
     <section class="sidebar">
@@ -54,13 +55,15 @@
               <h3 class="box-title">查询条件</h3>
             </div>
 			<div class="query-box">
-				<label>人员类型:</label>
-				<select><option>全部</option></select>
-				<label>姓名:</label>
-				<input type="text" />
-				<label>SN:</label>
-				<input type="text" />
-				<button type="button" class="btn btn-info">查询</button>
+				<form id="searchForm" class="form-horizontal">
+					<label>人员类型:</label>
+					<select name="userType"><option value="">全部</option></select>
+					<label>姓名:</label>
+					<input type="text" name="userName" />
+					<label>SN:</label>
+					<input type="text" name="deveui" />
+					<button id="query" type="button" class="btn btn-info">查询</button>
+				</form>
 			</div>
 		  </div>
 		</div>
@@ -73,126 +76,78 @@
             </div>
 			<div>
 
-				<a class="btn btn-app" id="add_btn" data-toggle="modal" data-target="#modal-default">
+				<a class="btn btn-app" id="add_btn" >
 					<i class="fa fa-plus"></i> 添加用户
 				</a>
 				<a class="btn btn-app">
-					<i class="fa fa-minus"></i> 批量删除
+					<i class="fa fa-minus" id="del_btn"></i> 批量删除
 				</a>
-				<a class="btn btn-app">
+				<a class="btn btn-app" id="up_btn">
 					<i class="fa fa-sign-in"></i> 批量导入
 				</a>
-				<a class="btn btn-app">
+				<a class="btn btn-app" id="down_btn">
 					<i class="fa fa-sign-out"></i> 批量导出
 				</a>
-				
+
 			</div>
             <!-- /.box-header -->
             <div class="box-body">
               <div  class="dataTables_wrapper form-inline dt-bootstrap"><div class="row"><div class="col-sm-6"></div><div class="col-sm-6"></div></div><div class="row"><div class="col-sm-12">
-			  <table class="table table-bordered table-hover dataTable" role="grid" >
-                <thead>
-                <tr role="row">
-				<th  ><input type="checkbox" /></th>
-				<th tabindex="0"  rowspan="1" colspan="1" >姓名</th>
-				<th tabindex="0"  rowspan="1" colspan="1" >性别</th>
-				<th tabindex="0"  rowspan="1" colspan="1" >SN</th>
-				<th tabindex="0"  rowspan="1" colspan="1" >人员类型</th>
-				<th tabindex="0"  rowspan="1" colspan="1" >操作</th>
-				</tr>
-                </thead>
-                <tbody>
-                <tr role="row" >
-                  <td class=""><input type="checkbox" /></td>
-                  <td class="">张三</td>
-                  <td class="sorting_1">男</td>
-                  <td>SN310021554</td>
-                  <td>管理信息处</td>
-                  <td><button type="button" class="btn btn-success">编辑</button><button type="button" class="btn btn-danger">删除</button></td>
-                </tr>
-                <tr role="row">
-                  <td class=""><input type="checkbox" /></td>
-                  <td class="">李四</td>
-                  <td class="sorting_1">男</td>
-                  <td>SN310021555</td>
-                  <td>管理信息处</td>
-                  <td><button type="button" class="btn btn-success">编辑</button><button type="button" class="btn btn-danger">删除</button></td>
-                </tr>
-                <tr role="row" >
-                  <td class=""><input type="checkbox" /></td>
-                  <td class="">王二</td>
-                  <td class="sorting_1">女</td>
-                  <td>SN310021556</td>
-                  <td>XXX车间</td>
-                  <td><button type="button" class="btn btn-success">编辑</button><button type="button" class="btn btn-danger">删除</button></td>
-                </tr>
-                <tr role="row">
-                  <td class=""><input type="checkbox" /></td>
-                  <td class="">赵一</td>
-                  <td class="sorting_1">男</td>
-                  <td>SN310021557</td>
-                  <td>XXX车间</td>
-                  <td><button type="button" class="btn btn-success">编辑</button><button type="button" class="btn btn-danger">删除</button></td>
-                </tr>
-                <tr role="row" >
-                  <td class=""><input type="checkbox" /></td>
-                  <td class="">张三</td>
-                  <td class="sorting_1">男</td>
-                  <td>SN310021554</td>
-                  <td>管理信息处</td>
-                  <td><button type="button" class="btn btn-success">编辑</button><button type="button" class="btn btn-danger">删除</button></td>
-                </tr>
-                <tr role="row">
-                  <td class=""><input type="checkbox" /></td>
-                  <td class="">李四</td>
-                  <td class="sorting_1">男</td>
-                  <td>SN310021554</td>
-                  <td>管理信息处</td>
-                  <td><button type="button" class="btn btn-success">编辑</button><button type="button" class="btn btn-danger">删除</button></td>
-                </tr>
-                <tr role="row" >
-                  <td class=""><input type="checkbox" /></td>
-                  <td class="">张三</td>
-                  <td class="sorting_1">男</td>
-                  <td>SN310021554</td>
-                  <td>管理信息处</td>
-                  <td><button type="button" class="btn btn-success">编辑</button><button type="button" class="btn btn-danger">删除</button></td>
-                </tr>
-                <tr role="row">
-                  <td class=""><input type="checkbox" /></td>
-                  <td class="">李四</td>
-                  <td class="sorting_1">男</td>
-                  <td>SN310021554</td>
-                  <td>管理信息处</td>
-                  <td><button type="button" class="btn btn-success">编辑</button><button type="button" class="btn btn-danger">删除</button></td>
-                </tr>
-				
-                <tr role="row" >
-                  <td class=""><input type="checkbox" /></td>
-                  <td class="">张三</td>
-                  <td class="sorting_1">男</td>
-                  <td>SN310021554</td>
-                  <td>管理信息处</td>
-                  <td><button type="button" class="btn btn-success">编辑</button><button type="button" class="btn btn-danger">删除</button></td>
-                </tr>
-                <tr role="row">
-                  <td class=""><input type="checkbox" /></td>
-                  <td class="">李四</td>
-                  <td class="sorting_1">男</td>
-                  <td>SN310021554</td>
-                  <td>管理信息处</td>
-                  <td><button type="button" class="btn btn-success">编辑</button><button type="button" class="btn btn-danger">删除</button></td>
-                </tr>
-				
-				</tbody>
-              </table></div></div>
-			  <div class="row"><div class="col-sm-5"><div class="dataTables_info" id="example2_info" role="status" aria-live="polite">共57条数据，第1到10条</div></div><div class="col-sm-7"><div class="dataTables_paginate paging_simple_numbers" id="example2_paginate"><ul class="pagination"><li class="paginate_button previous disabled" id="example2_previous"><a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0">上一页</a></li><li class="paginate_button active"><a href="#" aria-controls="example2" data-dt-idx="1" tabindex="0">1</a></li><li class="paginate_button "><a href="#" aria-controls="example2" data-dt-idx="2" tabindex="0">2</a></li><li class="paginate_button "><a href="#" aria-controls="example2" data-dt-idx="3" tabindex="0">3</a></li><li class="paginate_button "><a href="#" aria-controls="example2" data-dt-idx="4" tabindex="0">4</a></li><li class="paginate_button "><a href="#" aria-controls="example2" data-dt-idx="5" tabindex="0">5</a></li><li class="paginate_button "><a href="#" aria-controls="example2" data-dt-idx="6" tabindex="0">6</a></li><li class="paginate_button next" id="example2_next"><a href="#" aria-controls="example2" data-dt-idx="7" tabindex="0">下一页</a></li></ul></div></div></div></div>
+
+						<table class="table table-bordered" id="dataTab">
+							<thead>
+							<tr role="row">
+							<th  ><input type="checkbox" /></th>
+							<th tabindex="0"  rowspan="1" colspan="1" >姓名</th>
+							<th tabindex="0"  rowspan="1" colspan="1" >性别</th>
+							<th tabindex="0"  rowspan="1" colspan="1" >SN</th>
+							<th tabindex="0"  rowspan="1" colspan="1" >人员类型</th>
+							<th tabindex="0"  rowspan="1" colspan="1" >操作</th>
+							</tr>
+							</thead>
+						  <tbody id="dataBody">
+						  </tbody>
+					  </table>
             </div>
           </div>
         </div>
       </div>
     </section>
   </div>
+
+		<div class="modal fade" id="modal-up" style="display: none;">
+		<div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span></button>
+                <h4 class="modal-title">批量导入</h4>
+              </div>
+              <div class="modal-body">
+                <form class="form-horizontal" id="tagForm">
+					<fieldset>
+						<div class="form-group">
+						  <label for="inputEmail3" class="col-sm-2 control-label">模板下载</label>
+						  <div class="col-sm-4">
+							<input type="button" class="btn" value="下载" id="btn_downModal" />
+						  </div>
+						</div>
+						<div class="form-group">
+						  <label for="inputEmail3" class="col-sm-2 control-label">选择文件</label>
+						  <div class="col-sm-4">
+							<input type="file" class="form-control" id="file_up" name="file_up" />
+						  </div>
+						</div>
+					</fieldset>
+				  </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">关闭</button>
+                <button type="button" id="btn_uploadFile" class="btn btn-primary">上传</button>
+              </div>
+            </div>
+          </div>
+		</div>
 
 		<div class="modal fade" id="modal-default" style="display: none;">
           <div class="modal-dialog">
@@ -208,52 +163,215 @@
 						<div class="form-group">
 						  <label for="inputEmail3" class="col-sm-2 control-label">姓名</label>
 						  <div class="col-sm-4">
-							<input type="text" class="form-control" />
+							<input type="text" class="form-control" id="userName" name="userName" />
 						  </div>
-						</div>						
+						</div>
 						<div class="form-group">
 						  <label for="inputEmail3" class="col-sm-2 control-label">性别</label>
 						  <div class="col-sm-4">
-							<input type="radio"  />男
-							<input type="radio"  />女
+							<select class="form-control" id="sex" name="sex" >
+								<option value="0">男</option>
+								<option value="1">女</option>
+							  </select>
 						  </div>
 						</div>
 						<div class="form-group">
 						  <label for="inputEmail3" class="col-sm-2 control-label">SN</label>
 						  <div class="col-sm-4">
-							<input type="text" class="form-control" />
+							<input type="text" class="form-control" id="deveui" name="deveui" />
 						  </div>
-						</div>	
+						</div>
 						<div class="form-group">
 						  <label for="inputEmail3" class="col-sm-2 control-label">人员类型</label>
 						  <div class="col-sm-4">
-							<select class="form-control">
-								<option>管理信息处</option>
-								<option>1号车间</option>
-								<option>2号车间</option>
+							<select class="form-control" name="userType" id="userType" >
+								<option value="1">管理信息处</option>
+								<option value="2">1号车间</option>
+								<option value="3">2号车间</option>
 							  </select>
 						  </div>
-						</div>		
-						
+						</div>
+						<input type="hidden" name="userId" id="userId">
 					</fieldset>
 				  </form>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary">保存</button>
+                <button type="button" id="btn_save" class="btn btn-primary">保存</button>
               </div>
             </div>
             <!-- /.modal-content -->
           </div>
           <!-- /.modal-dialog -->
         </div>
-		
+
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="js/adminlte.min.js"></script>
 <script src="js/common.js"></script>
+<script src='js/jquery.dataTables.min.js'></script>
 
 	<script>
+
+		function clickEdit(userId){
+
+			$.ajax({
+				type: "post",
+				url: 'user/getUser.htm?t='+new Date(),
+				data:'userId='+userId,
+				contentType: "application/x-www-form-urlencoded",
+				success: function (result) {
+					var user = result.data;
+					$("#userId").val(user.userId);
+					$("#sex").val(user.sex);
+					$("#userName").val(user.userName);
+					$("#userType").val(user.userType);
+					$("#deveui").val(user.deveui);
+
+					$('#modal-default').modal('show');
+				}
+			});
+		}
+
+		$(function(){
+			query();
+			$("#query").click(function(){
+				query();
+			})
+
+
+			var dataTab;
+			//查询数据
+			function query(){
+				var queryData = $('#searchForm').serialize();
+				if(dataTab){
+					dataTab.settings()[0].ajax.url='user/getList.htm?t='+new Date()+"&"+queryData;
+					dataTab.ajax.reload();
+				}else{
+					dataTab = $('#dataTab').DataTable({
+						"ajax" : {
+							type: "post",
+							url: 'user/getList.htm?t='+new Date()+"&"+queryData,
+							dataSrc:function(data){
+								return data.data;
+							}
+						},
+						"bJQueryUI": true,
+						"processing": true,
+						"serverSide": true,
+						"oLanguage": dtLang,
+						columns:[
+							{ data: 'userId',
+								"render": function ( data, type, full, meta ) {
+									return '<input type="checkbox" >';
+								}
+							},
+							{ data: 'userName' },
+							{ data: 'sex',
+								"render": function ( data, type, full, meta ) {
+									if(data=="0"){
+										return '男';
+									}else{
+										return '女';
+									}
+								}
+							},
+							{ data: 'deveui' },
+							{ data: 'userType',
+								"render": function ( data, type, full, meta ) {
+									if(data=="1"){
+										return '管理信息处';
+									}else if(data=="2"){
+										return '1号车间';
+									}else if(data=="3"){
+										return '2号车间';
+									}
+									return '';
+								}
+							},
+							{ data: 'userId',
+								"render": function ( data, type, full, meta ) {
+									var html =
+											'	<a class="btn btn-success" href="#" onclick="clickEdit('+data+')">'+
+											'		<i class="icon-zoom-in icon-white"></i>'+
+											'		编辑'+
+											'	</a>' +
+											'	<a class="btn btn-danger" href="#" onclick="delete('+data+')">'+
+											'		<i class="icon-zoom-in icon-white"></i>'+
+											'		删除'+
+											'	</a>';
+									return html;
+								}
+							}
+						]
+				    });
+				}
+			}
+
+
+			//新增按钮
+			$("#add_btn").click(function(){
+				$('#modal-default').modal('show');
+				$("#userId").val("");
+				$("#sex").val("");
+				$("#userName").val("");
+				$("#userType").val("");
+				$("#deveui").val("");
+			})
+
+			//批量导入按钮
+			$("#up_btn").click(function(){
+				$('#modal-up').modal('show');
+			});
+			//下载模板
+			$("#btn_downModal").click(function(e){
+				location.href = "user/downModal.htm";
+				e.preventDefault();
+			})
+			//导出数据
+			$("#down_btn").click(function(e){
+				location.href = "user/downLoad.htm";
+				e.preventDefault();
+			})
+
+			//上传按钮
+			$("#btn_uploadFile").click(function(){
+			    var formData = new FormData();
+				formData.append("file",$("#file_up")[0].files[0]);
+				$.ajax({
+					url:'user/upload.htm?t='+new Date(),
+					type:'post',
+					data: formData,
+					contentType: false,
+					processData: false,
+					success:function(res){
+						console.log(res.data);
+						if(res.data["code"]=="succ"){
+							alert('成功');
+						}else if(res.data["code"]=="err"){
+							alert('失败');
+						}else{
+							console.log(res);
+						}
+					}
+				})
+			});
+
+			//新增/修改保存按钮
+			$("#btn_save").click(function(){
+				$.ajax({
+					type: "post",
+					url: 'user/saveUser.htm?t='+new Date(),
+					data:$('#tagForm').serialize(),
+					contentType: "application/x-www-form-urlencoded",
+					success: function (result) {
+						alert("保存成功");
+						$('#modal-default').modal('hide');
+						query();
+					}
+				});
+			})
+		});
 
 	</script>
 </body>

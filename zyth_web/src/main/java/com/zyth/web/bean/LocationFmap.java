@@ -3,19 +3,21 @@ package com.zyth.web.bean;
 import java.util.Date;
 
 public class LocationFmap {
-    private String deveui;
+    protected String deveui;
 
-    private Integer userId;
+    protected Integer userId;
 
-    private Integer mapX;
+    protected Integer mapX;
 
-    private Integer mapY;
+    protected Integer mapY;
 
-    private Integer mapZ;
+    protected Integer mapZ;
 
-    private Date rcvtime;
+    protected Date rcvtime;
 
-    private Integer isLatest;
+    protected Integer isLatest;
+
+    protected Integer areaId;
 
     public String getDeveui() {
         return deveui;
@@ -72,4 +74,12 @@ public class LocationFmap {
     public void setIsLatest(Integer isLatest) {
         this.isLatest = isLatest;
     }
+
+	public Integer getAreaId() {
+		return areaId;
+	}
+
+	public void setAreaId(Integer areaId) {
+		this.areaId = areaId;
+	}
 }

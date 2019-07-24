@@ -17,6 +17,8 @@ public class Beacon {
 
     private String rsv;
 
+    private Integer userId;
+
     public String getDeveui() {
         return deveui;
     }
@@ -72,4 +74,12 @@ public class Beacon {
     public void setRsv(String rsv) {
         this.rsv = rsv == null ? null : rsv.trim();
     }
+
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
 }

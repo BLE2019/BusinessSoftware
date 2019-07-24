@@ -11,10 +11,14 @@
   <link rel="stylesheet" href="css/AdminLTE.min.css">
   <link rel="stylesheet" href="css/skins/skin-blue.css">
   <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/fengMap.css">
+  <link rel="stylesheet" href="css/iconfont.css">
 <style>
 #history_query input{
 	width:120px;
 }
+#fengMap_content{position:relative;height:500px;}
+.map-container{height:500px;}
 </style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -40,7 +44,7 @@
         </ul>
       </div>
     </nav>
-	
+
   </header>
   <aside class="main-sidebar">
     <section class="sidebar">
@@ -65,15 +69,15 @@
 				<input type="text" />
 				<label>结束时间:</label>
 				<input type="text" />
-				<button type="button" class="btn btn-info">查询</button>
+				<button id="btn_search" type="button" class="btn btn-info">查询</button>
 			</div>
 		  </div>
 		</div>
 	 </div>
 	  <div class="row">
-	  
+
         <div class="col-md-2">
-		
+
           <div class="box box-default">
             <div class="box-header with-border">
               <i class="fa fa-location-arrow"></i>
@@ -85,28 +89,12 @@
 			  <table class="table table-bordered table-hover dataTable" role="grid" >
                 <thead>
                 <tr role="row">
-				<th tabindex="0"  rowspan="1" colspan="1" >开始时间</th>
-				<th tabindex="0"  rowspan="1" colspan="1" >结束时间</th>
-				<th tabindex="0"  rowspan="1" colspan="1" >所在楼层</th>
+				<th tabindex="0"  rowspan="1" colspan="1" >时间</th>
+				<th tabindex="0"  rowspan="1" colspan="1" >所在区域</th>
 				</tr>
                 </thead>
-                <tbody>
-					<tr role="row" >
-					  <td class="">11:00</td>
-					  <td class="sorting_1">11:55</td>
-					  <td>1楼</td>
-					</tr>
-					<tr role="row" >
-					  <td class="">11:55</td>
-					  <td class="sorting_1">12:59</td>
-					  <td>2楼</td>
-					</tr>
-					<tr role="row" >
-					  <td class="">12:59</td>
-					  <td class="sorting_1">16:00</td>
-					  <td>1楼</td>
-					</tr>
-				
+                <tbody id="history_datatable">
+
 				</tbody>
               </table></div></div>
 				</div>
@@ -121,9 +109,29 @@
               <h3 class="box-title">历史轨迹</h3>
             </div>
             <div class="box-body">
-				<div id="content">
-					<img id="bg_map" src="img/bg_map.jpg">
-					<div id="hats"></div>
+				<div id="fengMap_content">
+					<div id="fengMap">
+					</div>
+					<!-- 楼层按钮组 -->
+					<div class="btn-group-vertical group-layer" data-toggle="buttons">
+						<label class="btn btn-primary btn-layer"><i class="icon iconfont"></i></label>
+						<span id="top" class="btn btn-default"><i class="icon iconfont"></i></span>
+						<div class="btn-group-vertical layer-list" data-toggle="buttons" tabindex="5000" style="height:350px;overflow: hidden; outline: none;">
+						<label class="btn btn-lg btn-default" data-gid="11"><span>F11</span></label>
+						<label class="btn btn-lg btn-default" data-gid="10"><span>F10</span></label>
+						<label class="btn btn-lg btn-default" data-gid="9"><span>F9</span></label>
+						<label class="btn btn-lg btn-default" data-gid="8"><span>F8</span></label>
+						<label class="btn btn-lg btn-default" data-gid="7"><span>F7</span></label>
+						<label class="btn btn-lg btn-default" data-gid="6"><span>F6</span></label>
+						<label class="btn btn-lg btn-default" data-gid="5"><span>F5</span></label>
+						<label class="btn btn-lg btn-default" data-gid="4"><span>F4</span></label>
+						<label class="btn btn-lg btn-default" data-gid="3"><span>F3</span></label>
+						<label class="btn btn-lg btn-default" data-gid="2"><span>F2</span></label>
+						<label class="btn btn-lg btn-default active" data-gid="1"><span>F1</span></label>
+
+						</div>
+						<span id="down" class="btn btn-default disabled"><i class="icon iconfont"></i></span>
+					</div>
 				</div>
             </div>
           </div>
@@ -136,32 +144,167 @@
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="dist/js/adminlte.min.js"></script>
+<script src="js/jquery.nicescroll.js"></script>
 <script src="js/common.js"></script>
+<script src="js/fengmap.min.js"></script>
+<script src="js/layerGroup.js"></script>
+<script src="js/layerList.js"></script>
 
 <script>
 
-//初始化
-$(function(){
-    function refresh() {
-		//存储生成的html
-		var addHtml = "";
-		var redCount = 0;
-		for(var i=0;i<50;i++){
-			var rx = 20+Math.random()*750;
-			var ry = 10+Math.random()*290;
-			var rcolor = Math.ceil(100*Math.random()-1);
-			var hatColor = 'yellow_hat';
-			if(rcolor>98){
-				hatColor = 'red_hat';
-				redCount++;
-			}
-			var temp = '<div class="hat '+hatColor+'" style="left:'+rx+'px;top:'+ry+'px"><span>'+'</span><br/><img src="img/'+hatColor+'.png"  /></div>';
-			addHtml+=temp;
+
+	//定义全局map变量
+		var map;
+		var fmapID = '10347';
+		var locationMarker = null;
+		var locationList=new Array();
+
+		window.onload = function() {
+			map = new fengmap.FMMap({
+				//渲染dom
+				container: document.getElementById('fengMap'),
+				//地图数据位置
+				mapServerURL: './data/' + fmapID,
+				//主题数据位置
+				mapThemeURL: './data/',
+				//设置主题
+				defaultThemeName: '2001',
+				// 默认比例尺级别设置为20级
+				defaultMapScaleLevel: 17,
+				//关闭聚焦层切换的动画显示
+				focusAnimateMode: true,
+				focusAlphaMode: false,
+				//设置最大倾斜角
+				defaultMaxTiltAngle: 60,
+				//设置倾斜角，默认倾斜角为60度
+				defaultTiltAngle: 180,
+				//开发者申请应用下web服务的key
+				key: '57c7f309aca507497d028a9c00207cf8',
+				//开发者申请应用名称
+				appName: '蜂鸟研发SDK_2_0',
+			});
+
+			//打开Fengmap服务器的地图数据和主题
+			map.openMapById(fmapID);
+
+			//地图加载完回调事件
+			map.on('loadComplete', function() {
+				//默认楼层加载完后不显示，需自定义设置要显示的楼层和聚焦层
+				map.visibleGroupIDs = map.groupIDs;
+				map.focusGroupID = map.groupIDs[0];
+				layerGroup.init(map.listGroups, map.focusGroupID);
+				$("#btn_search").click(function(){query();});
+			});
+		};
+
+		//创建定位点标注
+		function addLocationMarker(x,y,z,hatColor,id) {
+			locationMarker = new fengmap.FMLocationMarker({
+				//设置图片的路径
+				url: './img/'+hatColor+'.png',
+				//设置图片显示尺寸
+				size: 46,
+				//设置图片高度
+				height: 10,
+			});
+
+			map.addLocationMarker(locationMarker);
+
+			locationMarker.setPosition({
+				//设置定位点的x坐标
+				x: x,
+				//设置定位点的y坐标
+				y: y,
+				//设置定位点所在楼层
+				groupID: map.groupIDs[z],
+				//设置定位点的高于楼层多少
+				zOffset: z+1,
+			});
+			locationList.push(locationMarker);
+		};
+
+		function moveLocationMarker(oldLoc,x,y,z){
+			//如果楼层没有改变，移动位置
+			oldLoc.moveTo({
+                x:x,
+                y:y,
+                time: 0.5
+			})
 		}
-		$("#hats").html(addHtml);
-    }
-	refresh();
-})
+
+		function query() {
+			$(locationList).each(function(i,data){
+				data.remove();
+			})
+			//调用后台方法
+			$.ajax({
+				type: "post",
+				url: apiUrl+'location/getHistory.htm',
+				contentType: "application/json",
+				sync:false,
+				success: function (result) {
+					var dataList = result.data;
+					var data = dataList[0];
+					addLocationMarker(13464693 + data.mapX,3743351+data.mapY,data.mapZ,'yellow_hat',data.deveui);
+					$("#history_datatable").append('<tr role="row" ><td class="">'+datetimeFormat(data.rcvtime)+'</td><td>'+data.mapZ+'楼</td></tr>');
+					setTimeout(function(){move(dataList, i)}, 1000);
+				}
+			});
+		}
+
+		function move(dataList,i){
+			if(i==dataList.length - 1){
+				//最后全部显示
+				$(dataList).each(function(i,data){
+					addLocationMarker(13464693 + data.mapX,3743351+data.mapY,data.mapZ,'yellow_hat',data.deveui);
+				})
+			}else{
+				i++;
+				var data = dataList[i];
+				moveLocationMarker(locationMarker,13464693 + data.mapX,3743351+data.mapY,data.mapZ);
+				$("#history_datatable").append('<tr role="row" ><td class="">'+datetimeFormat(data.rcvtime)+'</td><td>'+data.mapZ+'楼</td></tr>');
+				setTimeout(function(){move(dataList, i)}, 1000)
+
+			}
+		}
+//传入long时间，返回时分秒
+function datetimeFormat(longTypeDate){
+  var datetimeType = "";
+  var date = new Date();
+  date.setTime(longTypeDate);
+  datetimeType+= "  " + getHours(date);  //时
+  datetimeType+= ":" + getMinutes(date);   //分
+  datetimeType+= ":" + getSeconds(date);   //分
+  return datetimeType;
+}
+//返回小时
+function getHours(date){
+  var hours = "";
+  hours = date.getHours();
+  if(hours<10){
+    hours = "0" + hours;
+  }
+  return hours;
+}
+//返回分
+function getMinutes(date){
+  var minute = "";
+  minute = date.getMinutes();
+  if(minute<10){
+    minute = "0" + minute;
+  }
+  return minute;
+}
+//返回秒
+function getSeconds(date){
+  var second = "";
+  second = date.getSeconds();
+  if(second<10){
+    second = "0" + second;
+  }
+  return second;
+}
+
 </script>
 </body>
 </html>

@@ -1,9 +1,17 @@
 package com.zyth.web.bean;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class SosDeal {
-    private String deveui;
+import com.zyth.web.bean.vo.PageVO;
+
+public class SosDeal extends PageVO implements Serializable {
+    /**
+	 *
+	 */
+	private static final long serialVersionUID = -6900808939010526118L;
+
+	private String deveui;
 
     private String msgtype;
 

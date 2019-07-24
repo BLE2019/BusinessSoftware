@@ -1,7 +1,16 @@
 package com.zyth.web.bean;
 
-public class BeaconLoc {
-    private String beaconId;
+import java.io.Serializable;
+
+import com.zyth.web.bean.vo.PageVO;
+
+public class BeaconLoc extends PageVO implements Serializable {
+    /**
+	 *
+	 */
+	private static final long serialVersionUID = 3869736516603960565L;
+
+	private String beaconId;
 
     private Integer mapX;
 

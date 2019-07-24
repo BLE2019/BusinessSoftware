@@ -11,8 +11,29 @@
   <sql id="Base_Column_List" >
     user_id, user_name, user_type, sex, deveui
   </sql>
+  <select id="selectList" resultMap="BaseResultMap" parameterType="com.zyth.web.bean.User" >
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where 1=1
+    <if test="userName !=null and userName !=''">
+    	and user_name like '%' #{userName,jdbcType=VARCHAR} '%'
+    </if>
+    <if test="userType !=null and userType !=0">
+    	and user_type = #{userType,jdbcType=BIGINT}
+    </if>
+    <if test="deveui !=null and deveui !=''">
+    	and deveui like '%' #{deveui,jdbcType=VARCHAR} '%'
+    </if>
+    <if test="userId !=null and userId !=''">
+    	and user_id = #{userId,jdbcType=VARCHAR}
+    </if>
+    <if test="start !=null and length != 0">
+    limit #{start,jdbcType=BIGINT},#{length,jdbcType=BIGINT}
+    </if>
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from user
     where user_id = #{userId,jdbcType=INTEGER}
@@ -22,9 +43,9 @@
     where user_id = #{userId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.zyth.web.bean.User" >
-    insert into user (user_id, user_name, user_type, 
+    insert into user (user_id, user_name, user_type,
       sex, deveui)
-    values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userType,jdbcType=VARCHAR}, 
+    values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userType,jdbcType=VARCHAR},
       #{sex,jdbcType=INTEGER}, #{deveui,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.zyth.web.bean.User" >
