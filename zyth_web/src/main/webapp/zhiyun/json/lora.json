@@ -1,0 +1,12 @@
+[
+  {
+    "apname": "", //应用名 Application name
+    "apdsc": "", //应用描述 Application description
+    "serpro": "", //Service-profile
+    "devname": "", //Device name
+    "devdsc": "", //Device description
+    "deveui": "", //Device EUI
+    "devpro": "", //Device-profile
+    "appkey": "" //app-key
+  }
+]

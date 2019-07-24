@@ -1,0 +1,675 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>lora设备</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="js/datatables.min.css" rel="stylesheet" />
+    <script src="js/jquery.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/datatables.js"></script>
+    <script src="js/xlsx.full.min.js"></script>
+
+    <!--<script src="https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>-->
+    <!--<script src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.html5.min.js "></script>-->
+    <script src="js/dataTables.buttons.min.js"></script>
+    <script src="js/jszip.js"></script>
+    <script src="js/buttons.html5.min.js"></script>
+
+
+    <style>
+        .content {
+            margin: 50px auto;
+            border: 1px solid #ccc;
+            width: 100%;
+        }
+
+        .operation {
+            margin: 10px;
+        }
+
+            .operation > button {
+                margin: 10px;
+            }
+
+        #books_length {
+            float: left;
+            margin-left: 20px;
+        }
+
+        #books_filter {
+            float: right;
+            margin-right: 20px;
+        }
+
+        #equipments {
+            margin: 5px;
+            text-align: center;
+        }
+
+        .center-block {
+            display: block;
+            width: 21%;
+            margin: auto;
+        }
+
+        .fileinput-button {
+            position: relative;
+            display: inline-block;
+            overflow: hidden;
+        }
+
+            .fileinput-button input {
+                position: absolute;
+                left: 0px;
+                top: 0px;
+                opacity: 0;
+                -ms-filter: 'alpha(opacity=0)';
+            }
+
+        .dt-buttons {
+            width: 70px;
+            margin-top: -54px;
+            margin-left: 330px;
+            z-index: 0;
+        }
+    </style>
+
+</head>
+
+<body>
+    <section class="content">
+        <div class="btn-group operation" style="z-index:1">
+            <button id="btn_add" type="button" class="btn bg-primary">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+            </button>
+            <button id="btn_edit" type="button" class="btn bg-info">
+                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改
+            </button>
+            <button id="btn_delete" type="button" class="btn btn-success">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
+            </button>
+            <span class="btn btn-success fileinput-button" style="margin-top:10px;background-color:#739718">
+                <span>批量导入</span>
+                <input type="file" id="idFile" name="idFile" class="  " />
+                <!--<input type="file" onchange="importf(this)" value="null" id="file" />-->
+            </span>
+        </div>
+        <div class="modal fade" id="addeq" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">添加设备</h4>
+                    </div>
+                    <div id="addeqModal" class="modal-body">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label for="apName" class="col-sm-2 control-label">Application name:*</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" id="apName" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="appDsc" class="col-sm-2 control-label">Application description:*</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" id="appDsc" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="serPro" class="col-sm-2 control-label">Service-profile:*</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" id="serPro" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="decName" class="col-sm-2 control-label">Device name:*</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" id="decName" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="devDe" class="col-sm-2 control-label">Device description:*</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" id="devDe" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="devEui" class="col-sm-2 control-label">Device EUI:*</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" id="devEui" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="devPro" class="col-sm-2 control-label">Device-profile:*</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" id="devPro" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="appKey" class="col-sm-2 control-label">App-key:*</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" id="appKey" type="text">
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="center-block">
+                            <button id="cancelAdd" type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button id="addeqInfo" type="button" class="btn btn-success" data-dismiss="modal">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="editeqInfo" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">修改设备信息</h4>
+                    </div>
+                    <div id="editeqModal" class="modal-body">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label for="editApName" class="col-sm-2 control-label">Application name:*</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" id="editApName" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="editappDsc" class="col-sm-2 control-label">Application description:*</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" id="editappDsc" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="editserPro" class="col-sm-2 control-label">Service-profile:*</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" id="editserPro" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="editdecName" class="col-sm-2 control-label">Device name:*</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" id="editdecName" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="editdevDe" class="col-sm-2 control-label">Device description:*</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" id="editdevDe" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="editdevEui" class="col-sm-2 control-label">Device EUI:*</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" id="editdevEui" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="editdevPro" class="col-sm-2 control-label">Device-profile:*</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" id="editdevPro" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="editappKey" class="col-sm-2 control-label">app-key:*</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" id="editappKey" type="text">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="center-block">
+                            <button id="cancelEdit" type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button id="saveEdit" type="button" class="btn btn-success" data-dismiss="modal">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="deleteBook" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">确认要删除吗？</h4>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button id="delete" type="button" class="btn btn-danger" data-dismiss="modal">删除</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <table id="equipments" class="table table-striped table-bordered row-border hover order-column" cellspacing="0" style="width:99%">
+            <thead>
+                <tr>
+                    <th style="width:10%;text-align:center">序号</th>
+                    <th style="width:11.25%;text-align:center">Application name</th>
+                    <th style="width:11.25%;text-align:center">Application description</th>
+                    <th style="width:11.25%;text-align:center">Service-profile</th>
+                    <th style="width:11.25%;text-align:center">Device name</th>
+                    <th style="width:11.25%;text-align:center">Device description</th>
+                    <th style="width:11.25%;text-align:center">Device EUI</th>
+                    <th style="width:11.25%;text-align:center">Device-profile</th>
+                    <th style="width:11.25%;text-align:center">app-key</th>
+
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </section>
+    <script>
+
+        var data1 = [];
+        var columns = [
+            { "data": null },
+            { "data": "apname" },
+            { "data": "apdsc" },
+            { "data": "serpro" },
+            { "data": "devname" },
+            { "data": "devdsc" },
+            { "data": "deveui" },
+            { "data": "devpro" },
+            {"data":"appkey"}
+        ];
+
+        ////////////////////////////////////////////////////////////////////////////////////////////
+        /////////////////获取所有lora设备信息
+
+        $(function () {
+            $.ajax({
+                type: "get",
+              //  url: "http://49.4.66.231:8080/蜂鸟地图/springmvc/hello",
+                url:"",      /////////获取所有lora设备信息
+                data: {},
+                dataType: "json",
+                method: 'get', //请求方式（*）
+                success: function (res) {
+                    data1 = res;
+
+                    var table = $('#equipments').DataTable({
+                        data: data1,
+                        columns: columns,
+                        //dom: 'Bfrtip',
+                        //buttons: [{
+                        //    extend: 'excelHtml5',
+                        //    text: '批量导出',
+
+                        //    'className': 'btn btn-primary', //按钮的class样式
+
+                        //    customize: function (xlsx) {
+                        //        var sheet = xlsx.xl.worksheets['sheet1.xml'];
+                        //        $('row c[r^="C"]', sheet).attr('s', '2');
+                        //    }
+                        //}],
+                        "pagingType": "full_numbers",
+                        "bSort": true,
+                        "language": {
+                            "sProcessing": "处理中...",
+                            "sLengthMenu": "显示 _MENU_ 项结果",
+                            "sZeroRecords": "没有匹配结果",
+                            "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                            "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                            "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                            "sInfoPostFix": "",
+                            "sSearch": "搜索:",
+                            "sUrl": "",
+                            "sEmptyTable": "表中数据为空",
+                            "sLoadingRecords": "载入中...",
+                            "sInfoThousands": ",",
+                            "oPaginate": {
+                                "sFirst": "首页",
+                                "sPrevious": "上页",
+                                "sNext": "下页",
+                                "sLast": "末页"
+                            },
+                            "oAria": {
+                                "sSortAscending": ": 以升序排列此列",
+                                "sSortDescending": ": 以降序排列此列"
+                            }
+                        },
+                        "columnDefs": [{
+                            "searchable": false,
+                            "orderable": true,
+                            "targets": 0
+                        }],
+                        "order": [[1, 'asc']]
+
+
+                    });
+
+                    table.on('order.dt search.dt', function () {
+                        table.column(0, {
+                            search: 'applied',
+                            order: 'applied'
+                        }).nodes().each(function (cell, i) {
+                            cell.innerHTML = i + 1;
+                        });
+                    }).draw();
+
+                    $('#equipments tbody').on('click', 'tr', function () {
+                        if ($(this).hasClass('selected')) {
+                            $(this).removeClass('selected');
+                        }
+                        else {
+                            table.$('tr.selected').removeClass('selected');
+                            $(this).addClass('selected');
+                        }
+                    });
+
+
+                    $("#cancelAdd").on('click', function () {
+                        console.log('cancelAdd');
+                        $("#addeqModal").find('input').val('')
+                    })
+                    $("#addeqInfo").on('click', function () {
+                        console.log('addeqInfo');
+
+                        if (1) {
+
+                            if ($("#addeqModal").find('input').val() !== '') {
+                                var apName = $("#apName").val()
+                                var appDsc = $("#appDsc").val()
+                                var serPro = $("#serPro").val()
+                                var decName = $("#decName").val()
+                                var devDe = $("#devDe").val()
+                                var devEui = $("#devEui").val()
+                                var devPro = $("#devPro").val()
+                                var appKey = $("#appKey").val()
+
+                                var addeqInfos = [].concat(apName, appDsc, serPro, decName, devDe, devEui, devPro, appKey);
+                                for (var i = 0; i < addeqInfos.length; i++) {
+                                    if (addeqInfos[i] === '') {
+                                        alert(titles[i] + '内容不能为空')
+                                    }
+                                }
+
+                                table.row.add({
+                                    "": null,                                   
+                                    "apname": apName,
+                                    "apdsc": appDsc,
+                                    "serpro": serPro,
+                                    "devname": decName,
+                                    "devdsc": devDe,
+                                    "deveui": devEui,
+                                    "devpro": devPro,
+                                    "appkey": appKey
+
+
+                                }).draw();
+
+                                //////////////////////////////////////////////////////////////////////////////////////////////////////
+                                ///////添加设备后上传服务器；
+                                var datas = { "apname": apName, "apdsc": appDsc, "serpro": serPro, "devname": decName, "devdsc": devDe, "deveui": devEui, "devpro": devPro,"appkey":appKey };
+                                $.ajax({
+
+                                    url:"",                  //添加设备后上传服务器；
+                                    type: 'post',
+                                    contentType: 'application/json',
+                                    data: JSON.stringify(datas),
+                                    dataType: 'json',
+                                    success: function (data) {
+                                        //On ajax success do this
+                                        //alert(data);
+
+                                    },
+                                    error: function (xhr, ajaxOptions, thrownError) {
+                                        //On error do this
+                                        if (xhr.status == 200) {
+
+                                            alert(ajaxOptions);
+                                        }
+                                        else {
+                                            alert(111);
+                                            alert(xhr.status);
+                                            alert(thrownError);
+                                        }
+                                    }
+                                });
+
+                                $("#addeqModal").find('input').val('')
+                            }
+                        } else {
+                            alert('请输入内容')
+                        }
+                    })
+                    $("#addeqInfo").click();
+                    $("#btn_add").click(function () {
+                        console.log('add');
+                        $("#addeq").modal()
+                    });
+                    $('#btn_edit').click(function () {
+                        console.log('edit');
+                        if (table.rows('.selected').data().length) {
+                            $("#editeqInfo").modal()
+                            var editdevPro = $("#editdevPro").val();
+
+                            var editBookISBN = $("#editBookISBN").val();
+                            var tds = Array.prototype.slice.call($('.selected td'));
+
+                            var rowData = table.rows('.selected').data()[0];
+                            var inputs = $("#editeqModal").find('input')
+                            for (var i = 0; i < inputs.length; i++) {
+                                $(inputs[i]).val(rowData[i + 1])
+                            }
+                        } else {
+                            alert('请选择项目');
+                        }
+                    });
+                    $("#saveEdit").click(function () {
+                        var editApName = $("#editApName").val()
+                        var editappDsc = $("#editappDsc").val()
+                        var editserPro = $("#editserPro").val()
+                        var editdecName = $("#editdecName").val()
+                        var editdevDe = $("#editdevDe").val()
+                        var editdevEui = $("#editdevEui").val()
+                        var editdevPro = $("#editdevPro").val()
+                        var editappKey = $("#editappKey").val()
+
+                        var tds = Array.prototype.slice.call($('.selected td'));
+
+                        var newRowData = [].concat(editApName, editappDsc, editserPro, editdecName, editdevDe, editdevEui, editdevPro, editappKey);
+                        for (var i = 0; i < newRowData.length; i++) {
+                            if (newRowData[i] !== '') {
+
+                                tds[i + 1].innerHTML = newRowData[i];
+                            } else {
+                                //  alert(titles[i] + '内容不能为空')
+                                newRowData[i] = tds[i + 1].innerHTML;
+                            }
+                        }
+
+                        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        ////修改设备信息后上传服务器；
+
+                        var datas = { "apname": newRowData[0], "apdsc": newRowData[1], "serpro": newRowData[2], "devname": newRowData[3], "devdsc": newRowData[4], "deveui": newRowData[5], "devpro": newRowData[6], "appkey": newRowData[7] };
+                       
+                        $.ajax({
+
+                            url: "",                  /////修改设备信息后上传服务器；
+                            type: 'post',
+                            contentType: 'application/json',
+                            data: JSON.stringify(datas),
+                            dataType: 'json',
+                            success: function (data) {
+                                //On ajax success do this
+                                //alert(data);
+
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+                                //On error do this
+                                if (xhr.status == 200) {
+
+                                    alert(ajaxOptions);
+                                }
+                                else {
+                                    alert(111);
+                                    alert(xhr.status);
+                                    alert(thrownError);
+                                }
+                            }
+                        });
+                    })
+                    $("#cancelEdit").click(function () {
+                        console.log('cancelAdd');
+                        $("#editeqModal").find('input').val('')
+                    })
+                    $('#btn_delete').click(function () {
+                        if (table.rows('.selected').data().length) {
+                            $("#deleteBook").modal()
+                        } else {
+                            alert('请选择项目');
+                        }
+                    });
+                    $('#delete').click(function () {
+                           var tds = Array.prototype.slice.call($('.selected td'));
+                        //  console.log(tds[1].innerHTML);
+
+
+                        //////////////////////////////////////////////////////////////////////////////////////
+                        ///将删除的设备上传服务器；
+                        var datas = { "apname": tds[1].innerHTML };
+                        $.ajax({
+                            //  url: "http://49.4.66.231:8080/蜂鸟地图/springmvc/trace",
+                            url: "",                 /////将删除的设备application name上传服务器；
+                            type: 'post',
+                            contentType: 'application/json',
+                            data: JSON.stringify(datas),
+                            dataType: 'json',
+                            success: function (data) {
+                                //On ajax success do this
+                                //alert(data);
+
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+                                //On error do this
+                                if (xhr.status == 200) {
+
+                                    alert(ajaxOptions);
+                                }
+                                else {
+                                    alert(111);
+                                    alert(xhr.status);
+                                    alert(thrownError);
+                                }
+                            }
+                        });
+
+
+                        table.row('.selected').remove().draw(false);
+                    });
+
+                }
+                // }
+            });
+        })
+
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //////上传 excel文件
+        function importExcel(formData) {
+            $.ajax({               
+                url: "" ,   ////////lora批量导入的Excel文件上传服务器
+                type: 'POST',
+                cache: false,
+                data: formData,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                   //On ajax success do this
+                    //alert(data);
+                    window.location.reload();
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+                                //On error do this
+                                if (xhr.status == 200) {
+                                    alert(11111);
+                                    alert(ajaxOptions);
+                                }
+                                else {
+                                    alert(111);
+                                    alert(xhr.status);
+                                    alert(thrownError);
+                                }
+                        
+                }
+            }).done(function (msg) {
+                if (msg.result == 1) {
+                  
+                }
+                if (msg.result == 0) {
+                    //  showMessage("" + msg.resultText+1);
+                    alert("" + msg.resultText);
+                    console.log("" + msg.resultText);
+                    $("#idFile").val("");
+                }
+            }).fail(function (msg) {
+                alert("读取错误！");
+                console.log("读取错误！");
+                //  showMessage("读取错误！");
+                });
+             
+        }
+
+        //选择文件事件
+        $("#idFile").change(function () {
+            $("#roomid").val("");
+            $("#showid").val("");
+            var str = $("#idFile").val();
+            if (checkFileType(str)) {
+                var formData = new FormData();
+                formData.append('idFile', $('#idFile')[0].files[0]);
+                importExcel(formData);
+            }
+           
+        });
+
+        function checkFileType(str) {
+            var index = str.lastIndexOf('.');
+            var strtype = str.substr(index, str.length);
+
+            strtype = strtype.toLowerCase();
+            if (strtype == "") {
+                return false;
+            } else if (strtype == ".xls" || strtype == ".xlsx") {
+
+                return true;
+            } else {
+                $("#idFile").val("");
+                alert("文件格式为.xls或.xlsx");
+                //  showMessage("文件格式为.xls或.xlsx");
+                return false;
+            }
+            return false;
+        }
+        function checkFile(filename) {
+            var str = filename.val()
+            if (str.length == 0) {
+                alert("批量发放文件不能为空！");
+                //   showMessage("批量发放文件不能为空！");
+                return false;
+            }
+            return true;
+        }
+
+
+    </script>
+
+</body>
+
+</html>
