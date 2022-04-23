@@ -11,7 +11,7 @@
     <!--【请使用bat文件打包】 打包时注意： 线上包值为: online 测试包值为: zyth_web -->
 	<project.build.package></project.build.package>
     <!-- Spring -->
-	<spring-framework.version>4.2.2.RELEASE</spring-framework.version>
+	<spring-framework.version>5.3.19</spring-framework.version>
 	<spring-data-redis.version>1.6.0.RELEASE</spring-data-redis.version>
 	<jedis.version>2.8.0</jedis.version>
 	<jackson.version>2.1.0</jackson.version>
